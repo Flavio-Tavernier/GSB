@@ -478,4 +478,18 @@ class PdoGsb
         $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
         $requetePrepare->execute();
     }
+    
+    
+    
+    public function obtenirLogins() {
+        $requetePrepare = $this->connexion->prepare(
+            'SELECT login FROM visiteur'
+        );
+        $requetePrepare->execute();
+        return $requetePrepare->fetchAll();
+    }
+    
+    
+    
+    
 }
