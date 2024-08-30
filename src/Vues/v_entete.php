@@ -71,6 +71,13 @@
                                     Déconnexion
                                 </a>
                             </li>
+                            <li 
+                            <?php if ($_SESSION['comptable'] == 1) { ?>class="active"<?php } ?>>
+                                <a href="index.php?uc=deconnexion&action=demandeDeconnexion">
+                                    <span class="glyphicon glyphicon-log-out"></span>
+                                    Déconnexion
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
