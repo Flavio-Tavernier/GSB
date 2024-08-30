@@ -481,15 +481,4 @@ class PdoGsb
     
     
     
-    public function obtenirLogins() {
-        $requetePrepare = $this->connexion->prepare(
-            'SELECT login FROM visiteur'
-        );
-        $requetePrepare->execute();
-        return $requetePrepare->fetchAll();
-    }
-    
-    
-    
-    
 }
