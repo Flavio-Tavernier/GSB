@@ -481,4 +481,13 @@ class PdoGsb
     
     
     
+    /**
+     * Récupère tous les visiteurs qui ne sont pas des comptables
+     * 
+     */
+    public function getVisiteurs() {
+        
+    }
+    
+    
 }
