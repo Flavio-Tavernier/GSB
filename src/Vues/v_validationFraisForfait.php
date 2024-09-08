@@ -20,13 +20,25 @@
 <div class="row">     
     <label for="lstVisiteur">Choisir le visiteur :</label> 
     <select name="lstVisiteur" id="lstVisiteur">
-    <!-- Faire boucle pour générer options -->
+        <?php 
+            $visiteurs = $pdo->getVisiteurs();
+
+            foreach($visiteurs as $unVisiteur) {
+                $nomVisiteur = $unVisiteur['nom'];
+                $prenomVisiteur = $unVisiteur['prenom'];
+        ?>
+            <option value="<?php echo $nomVisiteur; echo " " . $prenomVisiteur; ?>"><?php echo $nomVisiteur; echo " " . $prenomVisiteur; ?></option>
+        <?php
+            }
+        ?>
     </select> 
     
     <label for="lstDateFicheFrais">Mois :</label>
     <select name="lstDateFicheFrais" id="lstDateFicheFrais">
     <!-- Faire boucle pour générer options -->
     </select> 
+    
+    
     
     
     <!-- <h2>

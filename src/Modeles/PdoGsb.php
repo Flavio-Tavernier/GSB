@@ -485,9 +485,29 @@ class PdoGsb
      * Récupère tous les visiteurs qui ne sont pas des comptables
      * 
      */
-    public function getVisiteurs() {
-        
+    public function getVisiteurs(): array 
+    {
+        $requetePrepare = $this->connexion->prepare(
+            'SELECT visiteur.nom as nom, visiteur.prenom as prenom ' 
+            . 'FROM visiteur ' 
+            . 'WHERE visiteur.comptable is false'
+        );
+        $requetePrepare->execute();
+        return $requetePrepare->fetchAll();
     }
     
     
 }
+
+/*
+public function getLesIdFrais(): array
+    {
+        $requetePrepare = $this->connexion->prepare(
+            'SELECT fraisforfait.id as idfrais '
+            . 'FROM fraisforfait ORDER BY fraisforfait.id'
+        );
+        $requetePrepare->execute();
+        return $requetePrepare->fetchAll();
+    }
+ */
+ 
