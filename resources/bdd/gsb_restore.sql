@@ -55687,3 +55687,7 @@ INSERT INTO `lignefraishorsforfait` VALUES
 (22655,'v959e','202408','Achat d\'espace publicitaire','2024-08-14',27.00),
 (22656,'v959e','202408','Traiteur, alimentation, boisson','2024-08-27',340.00),
 (22657,'v959e','202408','Repas avec praticien','2024-08-26',47.00);
+
+ALTER TABLE visiteur
+ADD COLUMN comptable boolean NOT NULL DEFAULT false
+AFTER dateembauche;
