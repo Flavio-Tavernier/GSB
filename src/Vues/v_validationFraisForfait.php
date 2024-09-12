@@ -22,6 +22,9 @@
     <select name="lstVisiteur" id="lstVisiteur">
         <?php 
             $visiteurs = $pdo->getVisiteurs();
+            
+            $idVisiteur = $visiteurs[0]["idVisiteur"];
+            $lesMoisDisponibles = $pdo->getLesMoisDisponibles($idVisiteur);
 
             foreach($visiteurs as $unVisiteur) {
                 $nomVisiteur = $unVisiteur['nom'];
@@ -35,7 +38,18 @@
     
     <label for="lstDateFicheFrais">Mois :</label>
     <select name="lstDateFicheFrais" id="lstDateFicheFrais">
-    <!-- Faire boucle pour générer options -->
+    <?php 
+            
+            $lesMoisDisponibles = $pdo->getLesMoisDisponibles($idVisiteur);
+
+            foreach($lesMoisDisponibles as $unMoisDisponible) {
+                var_dump($unMoisDisponible);
+        ?>
+            <option value="<?php echo $unMoisDisponible['mois'] ?>">
+                <?php echo $unMoisDisponible['numMois']; echo "/" . $unMoisDisponible['numAnnee'] ?></option>
+        <?php
+            }
+        ?>
     </select> 
     
     

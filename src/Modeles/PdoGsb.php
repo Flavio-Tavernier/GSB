@@ -488,8 +488,8 @@ class PdoGsb
     public function getVisiteurs(): array 
     {
         $requetePrepare = $this->connexion->prepare(
-            'SELECT visiteur.nom as nom, visiteur.prenom as prenom ' 
-            . 'FROM visiteur ' 
+            'SELECT visiteur.nom as nom, visiteur.prenom as prenom,' 
+            . 'visiteur.id as idVisiteur FROM visiteur ' 
             . 'WHERE visiteur.comptable is false'
         );
         $requetePrepare->execute();
@@ -499,15 +499,4 @@ class PdoGsb
     
 }
 
-/*
-public function getLesIdFrais(): array
-    {
-        $requetePrepare = $this->connexion->prepare(
-            'SELECT fraisforfait.id as idfrais '
-            . 'FROM fraisforfait ORDER BY fraisforfait.id'
-        );
-        $requetePrepare->execute();
-        return $requetePrepare->fetchAll();
-    }
- */
  
