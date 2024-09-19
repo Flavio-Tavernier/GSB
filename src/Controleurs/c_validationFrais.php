@@ -1,3 +1,5 @@
+<script type="text/javascript" src="../../script/validationFrais.js"></script>
+
 <?php
 
 /**
@@ -7,10 +9,7 @@
  *
  * @category  PPE
  * @package   GSB
- * @author    Réseau CERTA <contact@reseaucerta.org>
  * @author    Flavio TAVERNIER <flavio.tavernier2@gmail.com>
- * @copyright 2017 Réseau CERTA
- * @license   Réseau CERTA
  * @version   GIT: <0>
  * @link      http://www.reseaucerta.org Contexte « Laboratoire GSB »
  */
@@ -18,3 +17,13 @@
 use Outils\Utilitaires;
 
 require PATH_VIEWS . 'v_validationFraisForfait.php';
+
+$fonction = "getLesMoisDisponibles";
+
+require PATH_CTRLS . 'c_ajax.php';
+
+
+
+
+
+?>
