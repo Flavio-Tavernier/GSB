@@ -38,7 +38,8 @@ switch ($action) {
             $id = $visiteur['id'];
             $nom = $visiteur['nom'];
             $prenom = $visiteur['prenom'];
-            Utilitaires::connecter($id, $nom, $prenom);
+            $comptable = $visiteur['comptable'];
+            Utilitaires::connecter($id, $nom, $prenom, $comptable);
             header('Location: index.php');
         }
         break;
