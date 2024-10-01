@@ -2,32 +2,27 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
     document.getElementById('lstVisiteur').addEventListener('change',function(){
-        console.log("ca change");
+        let nomPrenom = document.getElementById('lstVisiteur').value.split(" ");
+        let nom = nomPrenom[0];
+        let prenom = nomPrenom[1];
 
-        ajaxGetLesMoisDisponibles();
+        ajaxGetLesMoisDisponibles(nom, prenom);
     });
 
 });
 
 
 
-function ajaxGetLesMoisDisponibles() {
+function ajaxGetLesMoisDisponibles(nom, prenom) {
     var xhr=new XMLHttpRequest();
-
-    xhr.open("GET","c_validationFrais.php?nom=Ayot&prenom=Percy",true);
-
-    // xmlhttp.onreadystatechange=function() {
-    //     if (this.readyState==4 && this.status==200) {
-    //         // document.getElementById("testMoisDispos").innerHTML=this.responseText;
-    //         console.log(this.responseText);
-            
-    //     }
-    // }
+    xhr.open("POST","../../src/Controleurs/c_validationFrais.php?uc=validationFrais&ajax=true&fonction=ajaxGetLesMoisDisponibles&nom=" + nom + "&prenom=" + prenom, true);
 
     xhr.onload = function() {
         if (xhr.status === 200) {
-            // Success! Handle the response here
-            console.log('Response:', xhr.responseText);
+            console.log("../../src/Controleurs/c_validationFrais.php?uc=validationFrais&ajax=true&fonction=ajaxGetLesMoisDisponibles&nom=" + nom + "&prenom=" + prenom);
+            
+            console.log(xhr.responseText);
+            document.getElementById("container").innerHTML=xhr.responseText;
         } else {
             console.error('Error:', xhr.statusText);
         }

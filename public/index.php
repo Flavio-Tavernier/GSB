@@ -26,7 +26,11 @@ session_start();
 $pdo = PdoGsb::getPdoGsb();
 $estConnecte = Utilitaires::estConnecte();
 
-require PATH_VIEWS . 'v_entete.php';
+
+if (!filter_input(INPUT_GET, 'ajax', FILTER_SANITIZE_FULL_SPECIAL_CHARS)) {
+    require PATH_VIEWS . 'v_entete.php';
+}
+
 
 $uc = filter_input(INPUT_GET, 'uc', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
@@ -52,6 +56,9 @@ switch ($uc) {
     case 'validationFrais':
         include PATH_CTRLS . 'c_validationFrais.php';
         break;
+    case 'testAjax':
+        include PATH_CTRLS . 'c_ajax.php';
+        break;
     case 'deconnexion':
         include PATH_CTRLS . 'c_deconnexion.php';
         break;
@@ -60,4 +67,8 @@ switch ($uc) {
         include PATH_VIEWS . 'v_erreurs.php';
         break;
 }
-require PATH_VIEWS . 'v_pied.php';
+
+if (!filter_input(INPUT_GET, 'ajax', FILTER_SANITIZE_FULL_SPECIAL_CHARS)) {
+    require PATH_VIEWS . 'v_pied.php';
+}
+

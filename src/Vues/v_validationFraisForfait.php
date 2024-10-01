@@ -14,14 +14,11 @@
  */
 
 ?>
-<div class="row">     
+<div class="row" id="container">     
     <label for="lstVisiteur">Choisir le visiteur :</label> 
     <select name="lstVisiteur" id="lstVisiteur">
         <?php 
             $visiteurs = $pdo->getVisiteurs();
-            
-            $idVisiteur = $visiteurs[0]["idVisiteur"];
-            $lesMoisDisponibles = $pdo->getLesMoisDisponibles($idVisiteur);
 
             foreach($visiteurs as $unVisiteur) {
                 $nomVisiteur = $unVisiteur['nom'];
@@ -38,15 +35,18 @@
     <label for="lstDateFicheFrais">Mois :</label>
     <select name="lstDateFicheFrais" id="lstDateFicheFrais">
     <?php 
-            
-            $lesMoisDisponibles = $pdo->getLesMoisDisponibles($idVisiteur);
+            if (isset($_GET['ajax'])) {
+                $nom = $_GET['nom'];
+                $prenom = $_GET['prenom'];
+        
+                $idVisiteur = $pdo->getIdVisiteur($nom, $prenom);
+                $lesMoisDisponibles = $pdo->getLesMoisDisponibles($idVisiteur);
 
-            foreach($lesMoisDisponibles as $unMoisDisponible) {
-                var_dump($unMoisDisponible);
+                foreach($lesMoisDisponibles as $unMoisDisponible) {
         ?>
-            <option value="<?php echo $unMoisDisponible['mois'] ?>">
-                <?php echo $unMoisDisponible['numMois']; echo "/" . $unMoisDisponible['numAnnee'] ?></option>
+            <option value="<?php echo $unMoisDisponible['mois'] ?>"><?php echo $unMoisDisponible['numMois']; echo "/" . $unMoisDisponible['numAnnee'] ?></option>
         <?php
+                }
             }
         ?>
     </select> 

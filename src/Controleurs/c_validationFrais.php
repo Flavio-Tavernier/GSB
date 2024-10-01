@@ -16,23 +16,8 @@
 
 use Outils\Utilitaires;
 
-require PATH_VIEWS . 'v_validationFraisForfait.php';
-
-var_dump("pas dans le if");
-if (isset($_GET['nom'])) {
-    var_dump("dans le if");
-    function getLesMoisDisponibles($pdo) 
-    {
-        $nom = $_GET['nom'];
-        $prenom = $_GET['prenom'];
-
-        $idVisiteur = $pdo->getIdVisiteur($nom, $prenom);
-        var_dump($idVisiteur);
-    
-        $moisDisponibles = $pdo->getLesMoisDisponibles($idVisiteur);
-        var_dump($moisDisponibles);
-    
-    }
+if (!isset($_GET["ajax"])) {
+    require PATH_VIEWS . 'v_validationFraisForfait.php';
 }
 
 
