@@ -28,8 +28,8 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
+        <div class="panel panel-primary <?php if ($_SESSION['comptable'] == 1) { ?>borderComptable<?php } ?>">
+            <div class="panel-heading <?php if ($_SESSION['comptable'] == 1) { ?>bgComptable borderComptable<?php } ?>">
                 <h3 class="panel-title">
                     <span class="glyphicon glyphicon-bookmark"></span>
                     Navigation
