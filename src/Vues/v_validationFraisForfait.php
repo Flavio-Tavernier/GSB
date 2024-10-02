@@ -34,21 +34,7 @@
     
     <label for="lstDateFicheFrais">Mois :</label>
     <select name="lstDateFicheFrais" id="lstDateFicheFrais">
-    <?php 
-            if (isset($_GET['ajax'])) {
-                $nom = $_GET['nom'];
-                $prenom = $_GET['prenom'];
         
-                $idVisiteur = $pdo->getIdVisiteur($nom, $prenom);
-                $lesMoisDisponibles = $pdo->getLesMoisDisponibles($idVisiteur);
-
-                foreach($lesMoisDisponibles as $unMoisDisponible) {
-        ?>
-            <option value="<?php echo $unMoisDisponible['mois'] ?>"><?php echo $unMoisDisponible['numMois']; echo "/" . $unMoisDisponible['numAnnee'] ?></option>
-        <?php
-                }
-            }
-        ?>
     </select> 
     
     

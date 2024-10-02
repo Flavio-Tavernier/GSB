@@ -15,28 +15,29 @@
 use Outils\Utilitaires;
 
 
-// $fonction = $_GET['fonction'];
-
-// if ($fonction == "ajaxGetLesMoisDisponibles") {
-//     $nom = $_GET["nom"];
-//     $prenom = $_GET["prenom"];
-
-//     $moisDispos = getLesMoisDisponibles($pdo, $nom, $prenom);
-//     var_dump($moisDispos);
-//  }
+if (isset($_GET['fonction'])) {
+    $fonction = $_GET['fonction'];
+    
+    if ($fonction == "ajaxGetLesMoisDisponibles") {
+        getLesMoisDisponibles($pdo);
+    }
+}
 
 
 
-//  function getLesMoisDisponibles($pdo, $nom, $prenom) 
-// {
-//     $idVisiteur = $pdo->getIdVisiteur($nom, $prenom);
+function getLesMoisDisponibles($pdo) 
+{
+    $nom = $_GET["nom"];
+    $prenom = $_GET["prenom"];
 
-//     var_dump($idVisiteur);
+    $idVisiteur = $pdo->getIdVisiteur($nom, $prenom);
+    $lesMoisDisponibles = $pdo->getLesMoisDisponibles($idVisiteur);
+    
+    var_dump($lesMoisDisponibles);
 
-//     $moisDisponibles = $pdo->getLesMoisDisponibles($idVisiteur);
+    return $lesMoisDisponibles;
+}
 
-//     var_dump($moisDisponibles);
 
-// }
 
-?>
+

@@ -56,7 +56,7 @@ switch ($uc) {
     case 'validationFrais':
         include PATH_CTRLS . 'c_validationFrais.php';
         break;
-    case 'testAjax':
+    case 'ajax':
         include PATH_CTRLS . 'c_ajax.php';
         break;
     case 'deconnexion':

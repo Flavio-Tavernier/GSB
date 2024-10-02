@@ -1,15 +1,7 @@
-<<<<<<< HEAD
-<?php
 
-
-use Outils\Utilitaires;
-
-require PATH_VIEWS . "v_validationFraisForfait.php";
-=======
 <script type="text/javascript" src="../../script/validationFrais.js"></script>
 
 <?php
-
 /**
  * Gestion des frais
  *
@@ -24,12 +16,11 @@ require PATH_VIEWS . "v_validationFraisForfait.php";
 
 use Outils\Utilitaires;
 
-if (!isset($_GET["ajax"])) {
-    require PATH_VIEWS . 'v_validationFraisForfait.php';
-}
+require PATH_CTRLS . 'c_ajax.php';
+require PATH_VIEWS . 'v_validationFraisForfait.php';
 
 
 
 
 ?>
->>>>>>> 6951e72aed782af45c949e180a865f468620e9bf
+
