@@ -484,10 +484,42 @@ class PdoGsb
     /**
      * Récupère tous les visiteurs qui ne sont pas des comptables
      * 
+     * @return array
      */
-    public function getVisiteurs() {
-        
+    public function getVisiteurs(): array 
+    {
+        $requetePrepare = $this->connexion->prepare(
+            'SELECT visiteur.nom as nom, visiteur.prenom as prenom ' 
+            . 'FROM visiteur WHERE visiteur.comptable is false'
+        );
+        $requetePrepare->execute();
+        return $requetePrepare->fetchAll();
+    }
+
+     /**
+     * Récupère l'id du visiteur dont le nom et prenom 
+     * est passé en paramètre
+     * 
+     * @param String $nom Nom du visiteur
+     * @param String $prenom Prenom du visiteur
+     *
+     * @return String
+     */
+    public function getIdVisiteur($nom, $prenom): String 
+    {
+        $requetePrepare = $this->connexion->prepare(
+            'SELECT visiteur.id as id FROM visiteur ' 
+            . 'WHERE visiteur.nom = :nom ' 
+            . 'AND visiteur.prenom = :prenom '
+        );
+        $requetePrepare->bindParam(':nom', $nom, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':prenom', $prenom, PDO::PARAM_STR);
+        $requetePrepare->execute();
+
+        return $requetePrepare->fetchColumn();
     }
     
     
 }
+
+ 
