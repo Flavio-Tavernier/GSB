@@ -32,8 +32,8 @@
 
     <div id="testMoisDispos"></div>
     
-    <label for="lstDateFicheFrais">Mois :</label>
-    <select name="lstDateFicheFrais" id="lstDateFicheFrais">
+    <label for="lstDatesFicheFrais">Mois :</label>
+    <select name="lstDatesFicheFrais" id="lstDatesFicheFrais">
         
     </select> 
     

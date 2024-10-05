@@ -18,14 +18,17 @@ use Outils\Utilitaires;
 if (isset($_GET['fonction'])) {
     $fonction = $_GET['fonction'];
     
-    if ($fonction == "ajaxGetLesMoisDisponibles") {
-        getLesMoisDisponibles($pdo);
+    switch ($fonction) {
+        case "ajaxGetLesMoisDisponibles" :
+            getLesMoisDisponibles($pdo);
+            break;
     }
+
 }
 
 
 
-function getLesMoisDisponibles($pdo) 
+function getLesMoisDisponibles($pdo)
 {
     $nom = $_GET["nom"];
     $prenom = $_GET["prenom"];
@@ -33,9 +36,7 @@ function getLesMoisDisponibles($pdo)
     $idVisiteur = $pdo->getIdVisiteur($nom, $prenom);
     $lesMoisDisponibles = $pdo->getLesMoisDisponibles($idVisiteur);
     
-    var_dump($lesMoisDisponibles);
-
-    return $lesMoisDisponibles;
+    echo json_encode($lesMoisDisponibles);
 }
 
 
