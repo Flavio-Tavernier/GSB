@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Gestion des frais
+ * Gestion des appels de fonctions ajax
  *
  * PHP Version 8
  *
@@ -15,6 +14,12 @@
 use Outils\Utilitaires;
 
 
+/**
+ * Si dans l'url, le paramètre 'fonction' est présent alors, 
+ * recupère le nom de la fonction et execute la voulue 
+ * en passant par un 'switch case'. Celui-ci permet un ajout de futures
+ * fonctions facilité
+ */
 if (isset($_GET['fonction'])) {
     $fonction = $_GET['fonction'];
     
@@ -23,11 +28,22 @@ if (isset($_GET['fonction'])) {
             getLesMoisDisponibles($pdo);
             break;
     }
-
 }
 
 
-
+/**
+ * Récupère les paramètres de 'nom' et 'prenom' d'un visiteur dans l'url
+ * et réalise un requête en BDD afin de récupérer l'id du visiteur 
+ * et les mois pour lesquels le visiteur passé en paramètre possède des fiches de frais
+ * 
+ * Renvoi les données à travers un 'echo' car le return ne permet pas
+ * de faire transiter les données vers le fichier javascript
+ * 
+ * @param PdoGSb $pdo Objet de la clase PdoGsb.php permettant la connexion à la BDD
+ *
+ * @return json 
+ * 
+ */
 function getLesMoisDisponibles($pdo)
 {
     $nom = $_GET["nom"];
