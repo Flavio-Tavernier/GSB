@@ -14,7 +14,7 @@
  * @link      http://www.reseaucerta.org Contexte « Laboratoire GSB »
  */
 ?>
-<?php if ($_SESSION['comptable'] == 0) { ?><div class="alert alert-warning" role="alert"><strong>Rappel : </strong>Vos frais sont à déclarer au plus tard le dernier jour du mois 
+<?php if ($_SESSION['role'] == 'VIS') { ?><div class="alert alert-warning" role="alert"><strong>Rappel : </strong>Vos frais sont à déclarer au plus tard le dernier jour du mois 
         et vos factures acquittées doivent être arrivées aux services comptables au plus tard le 10 du mois suivant la saisie.
         Les éléments reçus après le 10 seront reportés sur le mois suivant.
     </div><?php } ?>
@@ -27,8 +27,8 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <div class="panel panel-primary <?php if ($_SESSION['comptable'] == 1) { ?>borderComptable<?php } ?>">
-            <div class="panel-heading <?php if ($_SESSION['comptable'] == 1) { ?>bgComptable borderComptable<?php } ?>">
+        <div class="panel panel-primary <?php if ($_SESSION['role'] == 'COM') { ?>borderComptable<?php } ?>">
+            <div class="panel-heading <?php if ($_SESSION['role'] == 'COM') { ?>bgComptable borderComptable<?php } ?>">
                 <h3 class="panel-title">
                     <span class="glyphicon glyphicon-bookmark"></span>
                     Navigation
