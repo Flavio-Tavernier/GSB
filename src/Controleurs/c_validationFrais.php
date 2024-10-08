@@ -1,9 +1,9 @@
-
-<script type="text/javascript" src="../../script/validationFrais.js"></script>
+<!-- Appel d'un fichier javascript permettant le fonctionnement de l'ajax après certains évènements -->
+<script type="text/javascript" src="../../script/ajaxValidationFrais.js"></script>
 
 <?php
 /**
- * Gestion des frais
+ * Gestion de la validation des frais
  *
  * PHP Version 8
  *
