@@ -36,3 +36,9 @@ code {
 .btnComptable{
     background-color: #FF8800;
 }
+
+.champsVerticaux {
+    display: flex;
+    flex-direction: column;
+}
+

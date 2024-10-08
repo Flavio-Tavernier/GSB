@@ -32,6 +32,8 @@ function recupereNomPrenom()
     let nomPrenom = document.getElementById('lstVisiteur').value.split(" ");
     let nom = nomPrenom[0];
     let prenom = nomPrenom[1];
+    
+    ajaxGetValuesInputsValidationFrais(nom, prenom, "202309");
     ajaxGetLesMoisDisponibles(nom, prenom);
 }
 
@@ -51,11 +53,41 @@ function ajaxGetLesMoisDisponibles(nom, prenom)
     console.log("dedans");
     
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&ajax=true&fonction=ajaxGetLesMoisDisponibles&nom=" + nom + "&prenom=" + prenom, true);
+    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxGetLesMoisDisponibles&nom=" + nom + "&prenom=" + prenom, true);
 
     xhr.onload = function() {
         if (xhr.status === 200) {
+            document.getElementById("lstDatesFicheFrais").innerHTML = "";
             ajoutElementLstDatesFicheFrais(JSON.parse(xhr.responseText));
+        } else {
+            console.error('Error:', xhr.statusText);
+        }
+    };
+    xhr.send();
+}
+
+
+
+/**
+ * 
+ * @param string $nom nom d'un visiteur
+ * @param string $prenom prenom d'un visiteur
+ *
+ * @return json 
+ * 
+ */
+function ajaxGetValuesInputsValidationFrais(nom, prenom, mois) 
+{
+    var xhr=new XMLHttpRequest();
+    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxGetValuesInputsValidationFrais&nom=" + nom + 
+            "&prenom=" + prenom + 
+            "&mois=" + mois, true);
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            console.log(JSON.parse(xhr.responseText));
+            let valuesInputsValidationFrais = JSON.parse(xhr.responseText);
+            injectValuesInputsValidationFrais(valuesInputsValidationFrais);
         } else {
             console.error('Error:', xhr.statusText);
         }
@@ -83,6 +115,20 @@ function ajoutElementLstDatesFicheFrais(datesFichesFrais)
 
         document.getElementById("lstDatesFicheFrais").innerHTML += "<option value='" + mois + "'>" + numMois + "/" + numAnnee + "</option>";
     }   
+}
+
+
+function injectValuesInputsValidationFrais(valuesInputsValidationFrais)
+{
+    console.log(valuesInputsValidationFrais);
+    
+    for (let i = 0;i < valuesInputsValidationFrais.length;i++) {
+        console.log("input" + valuesInputsValidationFrais[i][0]);
+       document.getElementById("input" + valuesInputsValidationFrais[i][0]).value = valuesInputsValidationFrais[2];
+    } 
+    
+    
+    
 }
 
 

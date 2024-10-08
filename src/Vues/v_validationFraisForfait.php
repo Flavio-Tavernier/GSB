@@ -14,6 +14,8 @@
  */
 
 ?>
+<link href="../../public/styles/validationFrais.css" rel="stylesheet">
+
 <div class="row" id="container">     
     <label for="lstVisiteur">Choisir le visiteur :</label> 
     <select name="lstVisiteur" id="lstVisiteur">
@@ -34,13 +36,13 @@
     
     <label for="lstDatesFicheFrais">Mois :</label>
     <select name="lstDatesFicheFrais" id="lstDatesFicheFrais">
-        
+        <!-- Éléments ajoutés via fonction ajax -->
     </select> 
     
     
     
     
-    <!-- <h2>
+    <h2>
         Valider la fiche de frais 
     </h2>
     <h3>Eléments forfaitisés</h3>
@@ -49,7 +51,29 @@
               action="index.php?uc=gererFrais&action=validerMajFraisForfait" 
               role="form">
             <fieldset>       
-                <?php
+                <div id="containerInputsValidationFrais" class="champsVerticaux">
+                    <label for="inputETP">Forfait Étape</label>
+                    <input type="text" id="inputETP">
+                    
+                    <label for="inputKM">Frais Kilométrique</label>
+                    <input type="text" id="inputKM">
+                    
+                    <label for="inputNUI">Nuitée Hôtel</label>
+                    <input type="text" id="inputNUI">
+                    
+                    <label for="inputREP">Repas Restaurant</label>
+                    <input type="text" id="inputREP">
+               
+                </div>
+                
+                <button class="btn btn-success" type="submit">Corriger</button>
+                <button class="btn btn-danger" type="reset">Réinitialiser</button>
+            </fieldset>
+        </form>
+    </div> 
+</div>
+
+<?php
                 foreach ($lesFraisForfait as $unFrais) {
                     $idFrais = $unFrais['idfrais'];
                     $libelle = htmlspecialchars($unFrais['libelle']);
@@ -65,9 +89,3 @@
                     <?php
                 }
                 ?>
-                <button class="btn btn-success" type="submit">Ajouter</button>
-                <button class="btn btn-danger" type="reset">Effacer</button>
-            </fieldset>
-        </form>
-    </div> -->
-</div>
