@@ -45,17 +45,17 @@
                         <div class="col-md-8">
                             <ul class="nav nav-pills pull-right" role="tablist">
                                 <li <?php if (!$uc || $uc == 'accueil') {
-                if ($_SESSION['role'] == 'COM') {
+                if ($_SESSION['role'] == '1') {
                         ?>class="active btnComptable"<?php } else { ?>class="active"<?php
                                         }
                                     }
                                     ?>>
-                                    <a href="index.php" <?php if ($_SESSION['role'] == 'COM') { ?>class="txtComptable"<?php } ?>>
+                                    <a href="index.php" <?php if ($_SESSION['role'] == '1') { ?>class="txtComptable"<?php } ?>>
                                         <span class="glyphicon glyphicon-home"></span>
                                         Accueil
                                     </a>
                                 </li>
-    <?php if ($_SESSION['role'] == 'VIS') { ?>
+    <?php if ($_SESSION['role'] == '0') { ?>
                                     <li <?php if ($uc == 'gererFrais') { ?>class="active"<?php } ?>>
                                         <a href="index.php?uc=gererFrais&action=saisirFrais">
                                             <span class="glyphicon glyphicon-pencil"></span>
@@ -70,7 +70,7 @@
                                     </li>
                                     <li 
     <?php } ?>
-    <?php if ($_SESSION['role'] == 'COM') { ?>
+    <?php if ($_SESSION['role'] == '1') { ?>
                                 <li <?php if ($uc == 'validationFrais') { ?>class="active btnComptable"<?php } ?>>
                                     <a href="index.php?uc=validationFrais" class="txtComptable">
                                         <span class="glyphicon glyphicon-pencil"></span>
@@ -87,12 +87,12 @@
                             <?php } ?>
                             <?php
                                 if ($uc == 'deconnexion') {
-                                    if ($_SESSION['role'] == 'COM') {
+                                    if ($_SESSION['role'] == '1') {
                                         ?>class="active btnComptable"<?php } else { ?>class="active"<?php
                         }
                     }
                     ?>>
-                                <a href="index.php?uc=deconnexion&action=demandeDeconnexion" <?php if ($_SESSION['role'] == 'COM') { ?>class="txtComptable"<?php } ?>>
+                                <a href="index.php?uc=deconnexion&action=demandeDeconnexion" <?php if ($_SESSION['role'] == '1') { ?>class="txtComptable"<?php } ?>>
                                     <span class="glyphicon glyphicon-log-out"></span>
                                     Déconnexion
                                 </a>
