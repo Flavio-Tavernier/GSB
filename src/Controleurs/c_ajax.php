@@ -62,9 +62,6 @@ function getLesMoisDisponibles($pdo)
 }
 
 
-
-
-
 function getValuesInputsValidationFrais($pdo)
 {
     $nom = $_GET["nom"];
@@ -76,3 +73,7 @@ function getValuesInputsValidationFrais($pdo)
     
     echo json_encode($valuesInputsValidationFrais);
 }
+
+
+
+
