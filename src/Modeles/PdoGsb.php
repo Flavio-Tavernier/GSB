@@ -96,12 +96,22 @@ class PdoGsb
             'SELECT utilisateur.id AS id, utilisateur.nom AS nom, '
             . 'utilisateur.prenom AS prenom '
             . 'FROM utilisateur '
-            . 'WHERE utilisateur.login = :unLogin AND utilisateur.mdp = :unMdp'
+            . 'WHERE utilisateur.login = :unLogin'
         );
         $requetePrepare->bindParam(':unLogin', $login, PDO::PARAM_STR);
-        $requetePrepare->bindParam(':unMdp', $mdp, PDO::PARAM_STR);
         $requetePrepare->execute();
         return $requetePrepare->fetch();
+    }
+    
+    public function getMdpUtilisateur($login) {
+        $requetePrepare = $this->connexion->prepare(
+            'SELECT mdp '
+            . 'FROM utilisateur '
+            . 'WHERE utilisateur.login = :unLogin'
+        );
+        $requetePrepare->bindParam(':unLogin', $login, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        return $requetePrepare->fetch(PDO::FETCH_OBJ)->mdp;
     }
     
     public function getRoleUtilisateur($id): int
@@ -117,10 +127,28 @@ class PdoGsb
             return 0;
         } else {
             return 1;
+        } 
+    }
+    
+    public function hashAllPwd(): bool
+    {
+        $requetePrepare = $this->connexion->prepare(
+            'SELECT comptable.mdp AS mdp, comptable.id as id '
+            . 'FROM comptable'
+        );
+        $requetePrepare->execute();
+
+        $users = $requetePrepare->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($users as $user) {
+            $mdp = $user['mdp'];
+            $id = $user['id'];
+            $hashMdp = password_hash($mdp, PASSWORD_DEFAULT);
+            $req = $this->connexion->prepare('UPDATE comptable SET mdp= :hashMdp WHERE id= :unId');
+            $req->bindParam(':hashMdp', $hashMdp, PDO::PARAM_STR);
+            $req->bindParam(':unId', $id, PDO::PARAM_STR);
+            $req->execute();
         }
-        
-        
-        
     }
 
     /**
