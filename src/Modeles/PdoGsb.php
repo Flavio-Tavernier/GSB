@@ -90,18 +90,37 @@ class PdoGsb
      *
      * @return l'id, le nom et le prénom sous la forme d'un tableau associatif
      */
-    public function getInfosVisiteur($login, $mdp): array
+    public function getInfosUtilisateur($login, $mdp): array
     {
         $requetePrepare = $this->connexion->prepare(
-            'SELECT visiteur.id AS id, visiteur.nom AS nom, '
-            . 'visiteur.prenom AS prenom, visiteur.comptable AS role '
-            . 'FROM visiteur '
-            . 'WHERE visiteur.login = :unLogin AND visiteur.mdp = :unMdp'
+            'SELECT utilisateur.id AS id, utilisateur.nom AS nom, '
+            . 'utilisateur.prenom AS prenom '
+            . 'FROM utilisateur '
+            . 'WHERE utilisateur.login = :unLogin AND utilisateur.mdp = :unMdp'
         );
         $requetePrepare->bindParam(':unLogin', $login, PDO::PARAM_STR);
         $requetePrepare->bindParam(':unMdp', $mdp, PDO::PARAM_STR);
         $requetePrepare->execute();
         return $requetePrepare->fetch();
+    }
+    
+    public function getRoleUtilisateur($id): int
+    {
+        $requetePrepare = $this->connexion->prepare(
+            'SELECT comptable.id AS id '
+            . 'FROM comptable '
+            . 'WHERE comptable.id = :unId'
+        );
+        $requetePrepare->bindParam(':unId', $id, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        if ($requetePrepare->fetch()['id'] == null){
+            return 0;
+        } else {
+            return 1;
+        }
+        
+        
+        
     }
 
     /**

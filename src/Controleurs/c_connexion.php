@@ -29,7 +29,7 @@ switch ($action) {
     case 'valideConnexion':
         $login = filter_input(INPUT_POST, 'login', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $mdp = filter_input(INPUT_POST, 'mdp', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $utilisateur = $pdo->getInfosVisiteur($login, $mdp);
+        $utilisateur = $pdo->getInfosUtilisateur($login, $mdp);
         if (!is_array($utilisateur)) {
             Utilitaires::ajouterErreur('Login ou mot de passe incorrect');
             include PATH_VIEWS . 'v_erreurs.php';
@@ -38,7 +38,7 @@ switch ($action) {
             $id = $utilisateur['id'];
             $nom = $utilisateur['nom'];
             $prenom = $utilisateur['prenom'];
-            $role = $utilisateur['role'];
+            $role = $pdo->getRoleUtilisateur($id);
             Utilitaires::connecter($id, $nom, $prenom, $role);
             header('Location: index.php');
         }
