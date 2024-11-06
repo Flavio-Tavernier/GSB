@@ -14,6 +14,8 @@
  */
 
 ?>
+<link href="../../public/styles/validationFrais.css" rel="stylesheet">
+
 <div class="row" id="container">     
     <label for="lstVisiteur">Choisir le visiteur :</label> 
     <select name="lstVisiteur" id="lstVisiteur">
@@ -34,7 +36,7 @@
     
     <label for="lstDatesFicheFrais">Mois :</label>
     <select name="lstDatesFicheFrais" id="lstDatesFicheFrais">
-        
+        <!-- Éléments ajoutés via fonction ajax -->
     </select> 
     
     
@@ -49,26 +51,29 @@
               action="index.php?uc=gererFrais&action=validerMajFraisForfait" 
               role="form">
             <fieldset>       
-                <?php
-                foreach ($lesFraisForfait as $unFrais) {
-                    $idFrais = $unFrais['idfrais'];
-                    $libelle = htmlspecialchars($unFrais['libelle']);
-                    $quantite = $unFrais['quantite']; ?>
-                    <div class="form-group">
-                        <label for="idFrais"><?php echo $libelle ?></label>
-                        <input type="text" id="idFrais" 
-                               name="lesFrais[<?php echo $idFrais ?>]"
-                               size="10" maxlength="5" 
-                               value="<?php echo $quantite ?>" 
-                               class="form-control">
-                    </div>
-                    <?php
-                }
-                ?>
+                <div id="containerInputsValidationFrais" class="champsVerticaux">
+                    <label for="inputETP">Forfait Étape</label>
+                    <input type="text" id="inputETP">
+                    
+                    <label for="inputKM">Frais Kilométrique</label>
+                    <input type="text" id="inputKM">
+                    
+                    <label for="inputNUI">Nuitée Hôtel</label>
+                    <input type="text" id="inputNUI">
+                    
+                    <label for="inputREP">Repas Restaurant</label>
+                    <input type="text" id="inputREP">
+               
+                </div>
+                
                 <button class="btn btn-success" type="submit">Corriger</button>
                 <button class="btn btn-danger" type="reset">Réinitialiser</button>
             </fieldset>
         </form>
-    </div>
-
+    </div> 
 </div>
+
+
+
+
+

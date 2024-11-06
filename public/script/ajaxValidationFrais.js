@@ -14,26 +14,45 @@
  * 
  */
 document.addEventListener("DOMContentLoaded", function() {
-    recupereNomPrenom();
-    document.getElementById('lstVisiteur').addEventListener('change', recupereNomPrenom);
+    let nomPrenom = recupereNomPrenom();
+    let prenom = nomPrenom[1];
+    let nom = nomPrenom[0];
+    
+    ajaxGetLesMoisDisponibles(nom, prenom);
+    document.getElementById('lstVisiteur').addEventListener('change', 
+    function() {ajaxGetLesMoisDisponibles();});
+    
+    
+    
+//    document.getElementById('lstDatesFicheFrais').addEventListener('change', 
+//    ajaxGetValuesInputsValidationFrais(nom, prenom));
+    
 });
 
 
 /**
  * Récupère les paramètres de 'nom' et 'prenom' d'un visiteur 
  * dans la balise 'option' de la balise 'select'.
- * Puis, appelle la fonctio ajax de récupération des mois disponibles
- * en terme de fiches de frais
  * 
  */
 function recupereNomPrenom()
 {
     // FIXME:le système de recup nom prenom n'est pas bon pour tous les cas d'utilisation
-    let nomPrenom = document.getElementById('lstVisiteur').value.split(" ");
-    let nom = nomPrenom[0];
-    let prenom = nomPrenom[1];
-    ajaxGetLesMoisDisponibles(nom, prenom);
+    return document.getElementById('lstVisiteur').value.split(" ");
 }
+
+
+/**
+ * 
+ */
+function recupereMois()
+{
+    return document.getElementById('lstDatesFicheFrais').value;
+}
+
+
+
+
 
 /**
  * Fonction ajax qui récupère les mois pour lesquels 
@@ -46,16 +65,53 @@ function recupereNomPrenom()
  * @return json 
  * 
  */
-function ajaxGetLesMoisDisponibles(nom, prenom) 
+function ajaxGetLesMoisDisponibles() 
 {
-    console.log("dedans");
-    
+    let nomPrenom = recupereNomPrenom();
+    let prenom = nomPrenom[1];
+    let nom = nomPrenom[0];
+
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&ajax=true&fonction=ajaxGetLesMoisDisponibles&nom=" + nom + "&prenom=" + prenom, true);
+    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxGetLesMoisDisponibles&nom=" + nom + "&prenom=" + prenom, true);
 
     xhr.onload = function() {
         if (xhr.status === 200) {
+            document.getElementById("lstDatesFicheFrais").innerHTML = "";
             ajoutElementLstDatesFicheFrais(JSON.parse(xhr.responseText));
+
+            ajaxGetValuesInputsValidationFrais(recupereNomPrenom()[0], recupereNomPrenom()[1]);
+            document.getElementById('lstDatesFicheFrais').addEventListener('change', 
+            function() {ajaxGetValuesInputsValidationFrais(recupereNomPrenom()[0], recupereNomPrenom()[1]);});
+        } else {
+            console.error('Error:', xhr.statusText);
+        }
+    };
+    xhr.send();
+}
+
+
+
+/**
+ * 
+ * @param string $nom nom d'un visiteur
+ * @param string $prenom prenom d'un visiteur
+ *
+ * @return json 
+ * 
+ */
+function ajaxGetValuesInputsValidationFrais(nom, prenom) 
+{
+    let mois = recupereMois();
+        
+    var xhr=new XMLHttpRequest();
+    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxGetValuesInputsValidationFrais&nom=" + nom + 
+            "&prenom=" + prenom + 
+            "&mois=" + mois, true);
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            let valuesInputsValidationFrais = JSON.parse(xhr.responseText);
+            injectValuesInputsValidationFrais(valuesInputsValidationFrais);
         } else {
             console.error('Error:', xhr.statusText);
         }
@@ -83,6 +139,17 @@ function ajoutElementLstDatesFicheFrais(datesFichesFrais)
 
         document.getElementById("lstDatesFicheFrais").innerHTML += "<option value='" + mois + "'>" + numMois + "/" + numAnnee + "</option>";
     }   
+}
+
+
+function injectValuesInputsValidationFrais(valuesInputsValidationFrais)
+{
+    for (let i = 0;i < valuesInputsValidationFrais.length;i++) {
+       document.getElementById("input" + valuesInputsValidationFrais[i][0]).value = valuesInputsValidationFrais[i][2];
+    } 
+    
+    
+    
 }
 
 

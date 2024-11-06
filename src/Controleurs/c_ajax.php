@@ -27,6 +27,11 @@ if (isset($_GET['fonction'])) {
         case "ajaxGetLesMoisDisponibles" :
             getLesMoisDisponibles($pdo);
             break;
+        case "ajaxGetValuesInputsValidationFrais" :
+            getValuesInputsValidationFrais($pdo);
+            break;
+        default :
+            throw new Exception($fonction . "Fonction Ajax Inconnue");
     }
 }
 
@@ -46,6 +51,7 @@ if (isset($_GET['fonction'])) {
  */
 function getLesMoisDisponibles($pdo)
 {
+    // FIXME: filter input
     $nom = $_GET["nom"];
     $prenom = $_GET["prenom"];
 
@@ -53,6 +59,19 @@ function getLesMoisDisponibles($pdo)
     $lesMoisDisponibles = $pdo->getLesMoisDisponibles($idVisiteur);
     
     echo json_encode($lesMoisDisponibles);
+}
+
+
+function getValuesInputsValidationFrais($pdo)
+{
+    $nom = $_GET["nom"];
+    $prenom = $_GET["prenom"];
+    $mois = $_GET['mois'];
+
+    $idVisiteur = $pdo->getIdVisiteur($nom, $prenom);
+    $valuesInputsValidationFrais = $pdo->getLesFraisForfait($idVisiteur, $mois);
+    
+    echo json_encode($valuesInputsValidationFrais);
 }
 
 
