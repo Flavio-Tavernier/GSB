@@ -23,9 +23,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function() {ajaxGetLesMoisDisponibles();});    
 
     // document.getElementsByClassName('btn-corriger').addEventListener('click', 
-    //     function() {ajaxMajFraisForfait();});
-    
-    
+    //     function() {ajaxMajFraisForfait();});  
 });
 
 
@@ -229,6 +227,8 @@ function injectValuesInputsValidationFraisHorsForfait(valuesInputsValidationFrai
 }
 
 
+
+// TODO: A corriger/finir
 function ajaxMajFraisForfait() {
     let mois = recupereMois();
 
