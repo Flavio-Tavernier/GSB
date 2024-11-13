@@ -18,6 +18,7 @@ use Outils\Utilitaires;
 
 require PATH_CTRLS . 'c_ajax.php';
 require PATH_VIEWS . 'v_validationFraisForfait.php';
+require PATH_VIEWS . 'v_validationFraisHorsForfait.php';
 
 
 
