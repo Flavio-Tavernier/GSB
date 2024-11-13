@@ -20,12 +20,11 @@ document.addEventListener("DOMContentLoaded", function() {
     
     ajaxGetLesMoisDisponibles(nom, prenom);
     document.getElementById('lstVisiteur').addEventListener('change', 
-    function() {ajaxGetLesMoisDisponibles();});
+    function() {ajaxGetLesMoisDisponibles();});    
+
+    // document.getElementsByClassName('btn-corriger').addEventListener('click', 
+    //     function() {ajaxMajFraisForfait();});
     
-    
-    
-//    document.getElementById('lstDatesFicheFrais').addEventListener('change', 
-//    ajaxGetValuesInputsValidationFrais(nom, prenom));
     
 });
 
@@ -43,7 +42,7 @@ function recupereNomPrenom()
 
 
 /**
- * 
+ *  Récupère la valeur actuelle de 'lstDatesFicheFrais'
  */
 function recupereMois()
 {
@@ -58,9 +57,6 @@ function recupereMois()
  * Fonction ajax qui récupère les mois pour lesquels 
  * un visiteur possède une fiche de frais
  * en fonction du nom et prenom passés en paramètres
- * 
- * @param string $nom nom d'un visiteur
- * @param string $prenom prenom d'un visiteur
  *
  * @return json 
  * 
@@ -79,39 +75,16 @@ function ajaxGetLesMoisDisponibles()
             document.getElementById("lstDatesFicheFrais").innerHTML = "";
             ajoutElementLstDatesFicheFrais(JSON.parse(xhr.responseText));
 
-            ajaxGetValuesInputsValidationFrais(recupereNomPrenom()[0], recupereNomPrenom()[1]);
+            ajaxGetValuesInputsValidationFraisForfaits(recupereNomPrenom()[0], recupereNomPrenom()[1]);
+            ajaxGetValuesInputsValidationFraisHorsForfait(recupereNomPrenom()[0], recupereNomPrenom()[1]);
+
             document.getElementById('lstDatesFicheFrais').addEventListener('change', 
-            function() {ajaxGetValuesInputsValidationFrais(recupereNomPrenom()[0], recupereNomPrenom()[1]);});
-        } else {
-            console.error('Error:', xhr.statusText);
-        }
-    };
-    xhr.send();
-}
+            function() {ajaxGetValuesInputsValidationFraisForfaits(recupereNomPrenom()[0], recupereNomPrenom()[1]);});
+
+            document.getElementById('lstDatesFicheFrais').addEventListener('change', 
+            function() {ajaxGetValuesInputsValidationFraisHorsForfait(recupereNomPrenom()[0], recupereNomPrenom()[1]);});
 
 
-
-/**
- * 
- * @param string $nom nom d'un visiteur
- * @param string $prenom prenom d'un visiteur
- *
- * @return json 
- * 
- */
-function ajaxGetValuesInputsValidationFrais(nom, prenom) 
-{
-    let mois = recupereMois();
-        
-    var xhr=new XMLHttpRequest();
-    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxGetValuesInputsValidationFrais&nom=" + nom + 
-            "&prenom=" + prenom + 
-            "&mois=" + mois, true);
-
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            let valuesInputsValidationFrais = JSON.parse(xhr.responseText);
-            injectValuesInputsValidationFrais(valuesInputsValidationFrais);
         } else {
             console.error('Error:', xhr.statusText);
         }
@@ -125,9 +98,8 @@ function ajaxGetValuesInputsValidationFrais(nom, prenom)
  * ajoute une balise 'option' par ligne de la BDD représentant 1 mois dans 1 année 
  * dans la balise 'select'.
  * 
- * @param array $dateFicheFrais Tableau des différents mois/années
+ * @param array dateFicheFrais Tableau des différents mois/années
  *
- * @return json 
  * 
  */
 function ajoutElementLstDatesFicheFrais(datesFichesFrais) 
@@ -142,14 +114,152 @@ function ajoutElementLstDatesFicheFrais(datesFichesFrais)
 }
 
 
-function injectValuesInputsValidationFrais(valuesInputsValidationFrais)
+
+/**
+ * 
+ * @param string nom nom d'un visiteur
+ * @param string prenom prenom d'un visiteur
+ *
+ * @return json 
+ * 
+ */
+function ajaxGetValuesInputsValidationFraisForfaits(nom, prenom) 
 {
-    for (let i = 0;i < valuesInputsValidationFrais.length;i++) {
-       document.getElementById("input" + valuesInputsValidationFrais[i][0]).value = valuesInputsValidationFrais[i][2];
+    let mois = recupereMois();
+        
+    var xhr=new XMLHttpRequest();
+    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxGetValuesInputsValidationFraisForfaits&nom=" + nom + 
+            "&prenom=" + prenom + 
+            "&mois=" + mois, true);
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            let valuesInputsValidationFraisForfaits = JSON.parse(xhr.responseText);
+            injectValuesInputsValidationFraisForfaits(valuesInputsValidationFraisForfaits);
+        } else {
+            console.error('Error:', xhr.statusText);
+        }
+    };
+    xhr.send();
+}
+
+
+/**
+ * Injecte les donner récupérées en BDD dans les 'iputs' de la vue
+ * 'validationFrais' 
+ * 
+ * @param array valuesInputsValidationFraisForfaits Tableau des frais forfaits
+ *
+ * 
+ */
+function injectValuesInputsValidationFraisForfaits(valuesInputsValidationFraisForfaits)
+{
+    for (let i = 0;i < valuesInputsValidationFraisForfaits.length;i++) {
+       document.getElementById("input" + valuesInputsValidationFraisForfaits[i][0]).value = valuesInputsValidationFraisForfaits[i][2];
     } 
-    
-    
-    
+}
+
+
+
+
+
+
+/**
+ * 
+ * @param string nom nom d'un visiteur
+ * @param string prenom prenom d'un visiteur
+ *
+ * @return json 
+ * 
+ */
+function ajaxGetValuesInputsValidationFraisHorsForfait(nom, prenom) 
+{
+    let mois = recupereMois();
+        
+    var xhr=new XMLHttpRequest();
+    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxGetValuesInputsValidationFraisHorsForfait&nom=" + nom + 
+            "&prenom=" + prenom + 
+            "&mois=" + mois, true);
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {            
+            let valuesInputsValidationFraisHorsForfait = JSON.parse(xhr.responseText);
+            injectValuesInputsValidationFraisHorsForfait(valuesInputsValidationFraisHorsForfait);
+        } else {
+            console.error('Error:', xhr.statusText);
+        }
+    };
+    xhr.send();
+}
+
+
+
+/**
+ * Injecte les donner récupérées en BDD dans les 'iputs' de la vue
+ * 'validationFraisHorsForfait' 
+ * 
+ * @param array valuesInputsValidationFraisHorsForfait Tableau des frais hors forfait
+ *
+ */
+function injectValuesInputsValidationFraisHorsForfait(valuesInputsValidationFraisHorsForfait)
+{
+    let nomPrenom = recupereNomPrenom();
+    let prenom = nomPrenom[1];
+    let nom = nomPrenom[0];
+
+
+    document.getElementById("container-values-frais-hors-forfait").innerHTML = "";
+
+    for (let i = 0;i < valuesInputsValidationFraisHorsForfait.length;i++) {
+        document.getElementById("container-values-frais-hors-forfait").innerHTML += 
+        "<tr><td><input value='" + valuesInputsValidationFraisHorsForfait[i]['date'] + "'/></td>" +
+        "<td><input value='" + valuesInputsValidationFraisHorsForfait[i]['libelle'] + "'/></td>" +          
+        "<td><input value='" + valuesInputsValidationFraisHorsForfait[i]['montant'] + "'/></td>" +                                         
+        "<td><button class='btn btn-success btn-corriger' type='button'>Corriger</button>" + 
+        "<button class='btn btn-danger btn-reinitialiser' type='button'>Réinitialiser</button></td></tr>";
+    } 
+
+
+    document.querySelectorAll('.btn-reinitialiser').forEach(unBtnReinitialser => {
+        unBtnReinitialser.addEventListener('click', function() {
+            ajaxGetValuesInputsValidationFraisForfaits(nom, prenom);
+            ajaxGetValuesInputsValidationFraisHorsForfait(nom, prenom);
+        });
+    });
+}
+
+
+function ajaxMajFraisForfait() {
+    let mois = recupereMois();
+
+    let nomPrenom = recupereNomPrenom();
+    let prenom = nomPrenom[1];
+    let nom = nomPrenom[0];
+
+    let arrayDesFrais = [];
+    arrayDesFrais.push(document.getElementById("inputETP").value);
+    arrayDesFrais.push(document.getElementById("inputKM").value)
+    arrayDesFrais.push(document.getElementById("inputNUI").value)
+    arrayDesFrais.push(document.getElementById("inputREP").value)
+
+    arrayDesFrais = encodeURIComponent(JSON.stringify(arrayDesFrais));
+
+    var xhr=new XMLHttpRequest();
+    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxMajFraisForfait&nom=" + nom + 
+            "&prenom=" + prenom + 
+            "&mois=" + mois +
+            "&lesFrais=" + arrayDesFrais, true);
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            console.log(xhr.response);
+            
+            ajaxGetValuesInputsValidationFraisForfaits(nom, prenom)
+        } else {
+            console.error('Error:', xhr.statusText);
+        }
+    };
+    xhr.send();
 }
 
 

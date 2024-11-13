@@ -30,18 +30,8 @@
                     <th class="action">&nbsp;</th> 
                 </tr>
             </thead>  
-            <tbody>     
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <a href="index.php?uc=gererFrais&action=supprimerFrais&idFrais=" 
-                           onclick="return confirm('Voulez-vous vraiment supprimer ce frais?');">
-                            Supprimer ce frais
-                        </a>
-                    </td>
-                </tr>
+            <tbody id="container-values-frais-hors-forfait">     
+
             </tbody>  
         </table>
     </div>

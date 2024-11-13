@@ -215,8 +215,14 @@ class PdoGsb
      */
     public function majFraisForfait($idVisiteur, $mois, $lesFrais): void
     {
+        var_dump($idVisiteur);
+        var_dump($mois);
+        var_dump($lesFrais);
+
         $lesCles = array_keys($lesFrais);
         foreach ($lesCles as $unIdFrais) {
+            var_dump($unIdFrais);
+
             $qte = $lesFrais[$unIdFrais];
             $requetePrepare = $this->connexion->prepare(
                 'UPDATE lignefraisforfait '
@@ -229,7 +235,9 @@ class PdoGsb
             $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
             $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
             $requetePrepare->bindParam(':idFrais', $unIdFrais, PDO::PARAM_STR);
+            
             $requetePrepare->execute();
+            var_dump($requetePrepare);
         }
     }
 

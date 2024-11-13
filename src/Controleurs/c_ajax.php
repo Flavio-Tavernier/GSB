@@ -27,11 +27,21 @@ if (isset($_GET['fonction'])) {
         case "ajaxGetLesMoisDisponibles" :
             getLesMoisDisponibles($pdo);
             break;
-        case "ajaxGetValuesInputsValidationFrais" :
+        case "ajaxGetValuesInputsValidationFraisForfaits" :
             getValuesInputsValidationFrais($pdo);
             break;
+        case "ajaxGetValuesInputsValidationFraisHorsForfait" :
+            getValuesInputsValidationFraisHorsForfait($pdo);
+            break;
+        case 'ajaxMajFraisForfait':
+            $idVisiteur = $pdo->getIdVisiteur($_GET["nom"], $_GET["prenom"]);
+            $mois = $_GET['mois'];
+            $lesFrais = filter_input(INPUT_GET, 'lesFrais', FILTER_DEFAULT, FILTER_FORCE_ARRAY);
+
+            $pdo->majFraisForfait($idVisiteur, $mois, $lesFrais);
+            break;
         default :
-            throw new Exception($fonction . "Fonction Ajax Inconnue");
+            throw new Exception($fonction . " ---> Fonction Ajax Inconnue");
     }
 }
 
@@ -74,6 +84,17 @@ function getValuesInputsValidationFrais($pdo)
     echo json_encode($valuesInputsValidationFrais);
 }
 
+function getValuesInputsValidationFraisHorsForfait ($pdo) 
+{
+    $nom = $_GET["nom"];
+    $prenom = $_GET["prenom"];
+    $mois = $_GET['mois'];
+
+    $idVisiteur = $pdo->getIdVisiteur($nom, $prenom);
+    $ValuesInputsValidationFraisHorsForfait = $pdo -> getLesFraisHorsForfait($idVisiteur, $mois);
+
+    echo json_encode($ValuesInputsValidationFraisHorsForfait);
+}
 
 
 
