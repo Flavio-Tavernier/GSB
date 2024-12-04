@@ -149,6 +149,24 @@ class PdoGsb
             $req->bindParam(':unId', $id, PDO::PARAM_STR);
             $req->execute();
         }
+        
+        $requetePrepare = $this->connexion->prepare(
+            'SELECT visiteur.mdp AS mdp, visiteur.id as id '
+            . 'FROM visiteur'
+        );
+        $requetePrepare->execute();
+
+        $users = $requetePrepare->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($users as $user) {
+            $mdp = $user['mdp'];
+            $id = $user['id'];
+            $hashMdp = password_hash($mdp, PASSWORD_DEFAULT);
+            $req = $this->connexion->prepare('UPDATE visiteur SET mdp= :hashMdp WHERE id= :unId');
+            $req->bindParam(':hashMdp', $hashMdp, PDO::PARAM_STR);
+            $req->bindParam(':unId', $id, PDO::PARAM_STR);
+            $req->execute();
+        }
     }
 
     /**
