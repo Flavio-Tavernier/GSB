@@ -25,21 +25,51 @@ if (isset($_GET['fonction'])) {
     
     switch ($fonction) {
         case "ajaxGetLesMoisDisponibles" :
-            getLesMoisDisponibles($pdo);
+            // FIXME: filter input
+            $nom = filter_input(INPUT_GET, 'nom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $prenom = $_GET["prenom"];
+
+            $idVisiteur = $pdo->getIdVisiteur($nom, $prenom);
+            $lesMoisDisponibles = $pdo->getLesMoisDisponibles($idVisiteur);
+            
+            echo json_encode($lesMoisDisponibles);
             break;
         case "ajaxGetValuesInputsValidationFraisForfaits" :
-            getValuesInputsValidationFrais($pdo);
+            // FIXME: filter input
+            $nom = filter_input(INPUT_GET, 'nom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $prenom = $_GET['prenom'];
+            $mois = filter_input(INPUT_GET, 'mois', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            $idVisiteur = $pdo->getIdVisiteur($nom, $prenom);
+            $valuesInputsValidationFrais = $pdo->getLesFraisForfait($idVisiteur, $mois);
+            
+            echo json_encode($valuesInputsValidationFrais);
             break;
         case "ajaxGetValuesInputsValidationFraisHorsForfait" :
-            getValuesInputsValidationFraisHorsForfait($pdo);
+            // FIXME: filter input
+            $nom = filter_input(INPUT_GET, 'nom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $prenom = $_GET["prenom"];
+            $mois = filter_input(INPUT_GET, 'mois', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            $idVisiteur = $pdo->getIdVisiteur($nom, $prenom);
+            $valuesInputsValidationFraisHorsForfait = $pdo -> getLesFraisHorsForfaitValidation($idVisiteur, $mois);
+
+            echo json_encode($valuesInputsValidationFraisHorsForfait);
             break;
         case 'ajaxMajFraisForfait':
             // FIXME: filter input
-            $idVisiteur = $pdo->getIdVisiteur($_GET["nom"], $_GET["prenom"]);
-            $mois = $_GET['mois'];
+            $idVisiteur = $pdo->getIdVisiteur(filter_input(INPUT_GET, 'nom', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 
+            $_GET["prenom"]);
+            $mois = filter_input(INPUT_GET, 'mois', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $lesFrais = json_decode($_GET["lesFrais"], true);
 
             $pdo->majFraisForfait($idVisiteur, $mois, $lesFrais);
+            break;
+        case 'ajaxMajFraisHorsForfait':
+            $idFraisHorsForfait = $_GET['idFraisHorsForfait'];
+            $fraisHorsForfait = json_decode($_GET['lesFraisHorsForfait'], true);
+
+            $pdo->majFraisHorsForfait($idFraisHorsForfait, $fraisHorsForfait);
             break;
         default :
             throw new Exception($fonction . " ---> Fonction Ajax Inconnue");
@@ -47,57 +77,8 @@ if (isset($_GET['fonction'])) {
 }
 
 
-/**
- * Récupère les paramètres de 'nom' et 'prenom' d'un visiteur dans l'url
- * et réalise un requête en BDD afin de récupérer l'id du visiteur 
- * et les mois pour lesquels le visiteur passé en paramètre possède des fiches de frais
- * 
- * Renvoi les données à travers un 'echo' car le return ne permet pas
- * de faire transiter les données vers le fichier javascript
- * 
- * @param PdoGSb $pdo Objet de la clase PdoGsb.php permettant la connexion à la BDD
- *
- * @return json 
- * 
- */
-function getLesMoisDisponibles($pdo)
-{
-    // FIXME: filter input
-    $nom = $_GET["nom"];
-    $prenom = $_GET["prenom"];
-
-    $idVisiteur = $pdo->getIdVisiteur($nom, $prenom);
-    $lesMoisDisponibles = $pdo->getLesMoisDisponibles($idVisiteur);
-    
-    echo json_encode($lesMoisDisponibles);
-}
 
 
-function getValuesInputsValidationFrais($pdo)
-{
-    // FIXME: filter input
-    $nom = $_GET["nom"];
-    $prenom = $_GET["prenom"];
-    $mois = $_GET['mois'];
-
-    $idVisiteur = $pdo->getIdVisiteur($nom, $prenom);
-    $valuesInputsValidationFrais = $pdo->getLesFraisForfait($idVisiteur, $mois);
-    
-    echo json_encode($valuesInputsValidationFrais);
-}
-
-function getValuesInputsValidationFraisHorsForfait ($pdo) 
-{
-    // FIXME: filter input
-    $nom = $_GET["nom"];
-    $prenom = $_GET["prenom"];
-    $mois = $_GET['mois'];
-
-    $idVisiteur = $pdo->getIdVisiteur($nom, $prenom);
-    $ValuesInputsValidationFraisHorsForfait = $pdo -> getLesFraisHorsForfait($idVisiteur, $mois);
-
-    echo json_encode($ValuesInputsValidationFraisHorsForfait);
-}
 
 
 

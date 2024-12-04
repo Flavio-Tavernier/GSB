@@ -180,8 +180,8 @@ function ajaxGetValuesInputsValidationFraisHorsForfait(nom, prenom)
             "&mois=" + mois, true);
 
     xhr.onload = function() {
-        if (xhr.status === 200) {            
-            let valuesInputsValidationFraisHorsForfait = JSON.parse(xhr.responseText);
+        if (xhr.status === 200) {             
+            let valuesInputsValidationFraisHorsForfait = JSON.parse(xhr.responseText);            
             injectValuesInputsValidationFraisHorsForfait(valuesInputsValidationFraisHorsForfait);
         } else {
             console.error('Error:', xhr.statusText);
@@ -209,11 +209,17 @@ function injectValuesInputsValidationFraisHorsForfait(valuesInputsValidationFrai
     document.getElementById("container-values-frais-hors-forfait").innerHTML = "";
 
     for (let i = 0;i < valuesInputsValidationFraisHorsForfait.length;i++) {
+        let id = valuesInputsValidationFraisHorsForfait[i]['id'];
+        let date = valuesInputsValidationFraisHorsForfait[i]['date'];
+        let libelle = valuesInputsValidationFraisHorsForfait[i]['libelle'];
+        let montant = valuesInputsValidationFraisHorsForfait[i]['montant'];
+
         document.getElementById("container-values-frais-hors-forfait").innerHTML += 
-        "<tr><td><input value='" + valuesInputsValidationFraisHorsForfait[i]['date'] + "'/></td>" +
-        "<td><input value='" + valuesInputsValidationFraisHorsForfait[i]['libelle'] + "'/></td>" +          
-        "<td><input value='" + valuesInputsValidationFraisHorsForfait[i]['montant'] + "'/></td>" +                                         
-        "<td><button class='btn btn-success btn-corriger' type='button'>Corriger</button>" + 
+        "<tr id='" + id  + "'>" +
+        "<td><input value='" + date + "' type='date'/></td>" +
+        "<td><input value='" + libelle + "'/></td>" +          
+        "<td><input value='" + montant + "'/></td>" +                                         
+        "<td><button class='btn btn-success btn-corriger btn-corriger-frais-hors-forfait' type='button'>Corriger</button>" + 
         "<button class='btn btn-danger btn-reinitialiser' type='button'>Réinitialiser</button></td></tr>";
     } 
 
@@ -224,11 +230,16 @@ function injectValuesInputsValidationFraisHorsForfait(valuesInputsValidationFrai
             ajaxGetValuesInputsValidationFraisHorsForfait(nom, prenom);
         });
     });
+
+    document.querySelectorAll('.btn-corriger-frais-hors-forfait').forEach(unBtnReinitialser => {
+        unBtnReinitialser.addEventListener('click', function(element) {
+            ajaxMajFraisHorsForfait(element.target.parentNode.parentNode.id);
+        });
+    });
 }
 
 
 
-// TODO: A corriger/finir
 function ajaxMajFraisForfait() {
     let mois = recupereMois();
 
@@ -251,9 +262,34 @@ function ajaxMajFraisForfait() {
 
     xhr.onload = function() {
         if (xhr.status === 200) {
+            // ajaxGetValuesInputsValidationFraisForfaits(nom, prenom)
+        } else {
+            console.error('Error:', xhr.statusText);
+        }
+    };
+    xhr.send();
+}
+
+
+function ajaxMajFraisHorsForfait(idFraisHorsForfait) {
+    let ligneFraisHorsForfait = window.document.getElementById(idFraisHorsForfait).children;
+    let objetFraisHorsForfait = {"date" : "", "libelle" : "", "montant" : ""};
+
+    let i = 0;
+    for (let [key] of Object.entries(objetFraisHorsForfait)) {
+        objetFraisHorsForfait[key] = ligneFraisHorsForfait[i].children.item(0).value;
+        i++;
+    }
+    
+    console.log(objetFraisHorsForfait);
+    
+    var xhr=new XMLHttpRequest();
+    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxMajFraisHorsForfait&idFraisHorsForfait=" + idFraisHorsForfait +
+            "&lesFraisHorsForfait=" + JSON.stringify(objetFraisHorsForfait));
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
             console.log(xhr.response);
-            
-            ajaxGetValuesInputsValidationFraisForfaits(nom, prenom)
         } else {
             console.error('Error:', xhr.statusText);
         }
