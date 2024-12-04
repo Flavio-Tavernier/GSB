@@ -34,9 +34,10 @@ if (isset($_GET['fonction'])) {
             getValuesInputsValidationFraisHorsForfait($pdo);
             break;
         case 'ajaxMajFraisForfait':
+            // FIXME: filter input
             $idVisiteur = $pdo->getIdVisiteur($_GET["nom"], $_GET["prenom"]);
             $mois = $_GET['mois'];
-            $lesFrais = filter_input(INPUT_GET, 'lesFrais', FILTER_DEFAULT, FILTER_FORCE_ARRAY);
+            $lesFrais = json_decode($_GET["lesFrais"], true);
 
             $pdo->majFraisForfait($idVisiteur, $mois, $lesFrais);
             break;
@@ -74,6 +75,7 @@ function getLesMoisDisponibles($pdo)
 
 function getValuesInputsValidationFrais($pdo)
 {
+    // FIXME: filter input
     $nom = $_GET["nom"];
     $prenom = $_GET["prenom"];
     $mois = $_GET['mois'];
@@ -86,6 +88,7 @@ function getValuesInputsValidationFrais($pdo)
 
 function getValuesInputsValidationFraisHorsForfait ($pdo) 
 {
+    // FIXME: filter input
     $nom = $_GET["nom"];
     $prenom = $_GET["prenom"];
     $mois = $_GET['mois'];

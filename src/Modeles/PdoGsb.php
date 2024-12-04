@@ -215,14 +215,8 @@ class PdoGsb
      */
     public function majFraisForfait($idVisiteur, $mois, $lesFrais): void
     {
-        var_dump($idVisiteur);
-        var_dump($mois);
-        var_dump($lesFrais);
-
         $lesCles = array_keys($lesFrais);
         foreach ($lesCles as $unIdFrais) {
-            var_dump($unIdFrais);
-
             $qte = $lesFrais[$unIdFrais];
             $requetePrepare = $this->connexion->prepare(
                 'UPDATE lignefraisforfait '
@@ -237,7 +231,40 @@ class PdoGsb
             $requetePrepare->bindParam(':idFrais', $unIdFrais, PDO::PARAM_STR);
             
             $requetePrepare->execute();
-            var_dump($requetePrepare);
+        }
+    }
+
+
+    /**
+     * Met à jour la table ligneFraisHorsForfait
+     * Met à jour la table ligneFraisHorsForfait pour un visiteur et
+     * un mois donné en enregistrant les nouveaux montants
+     *
+     * @param String $idVisiteur ID du visiteur
+     * @param String $mois       Mois sous la forme aaaamm
+     * @param Array  $lesFrais   tableau associatif de clé idFrais et
+     *                           de valeur la quantité pour ce frais
+     *
+     * @return null
+     */
+    public function majFraisHorsForfait($idVisiteur, $mois, $lesFrais): void
+    {
+        $lesCles = array_keys($lesFrais);
+        foreach ($lesCles as $unIdFrais) {
+            $qte = $lesFrais[$unIdFrais];
+            $requetePrepare = $this->connexion->prepare(
+                'UPDATE lignefraisforfait '
+                . 'SET lignefraisforfait.quantite = :uneQte '
+                . 'WHERE lignefraisforfait.idvisiteur = :unIdVisiteur '
+                . 'AND lignefraisforfait.mois = :unMois '
+                . 'AND lignefraisforfait.idfraisforfait = :idFrais'
+            );
+            $requetePrepare->bindParam(':uneQte', $qte, PDO::PARAM_INT);
+            $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
+            $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
+            $requetePrepare->bindParam(':idFrais', $unIdFrais, PDO::PARAM_STR);
+            
+            $requetePrepare->execute();
         }
     }
 

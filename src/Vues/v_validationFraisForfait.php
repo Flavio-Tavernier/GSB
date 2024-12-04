@@ -66,7 +66,7 @@
                
                 </div>
                 
-                <button class="btn btn-success btn-corriger" type="button">Corriger</button>
+                <button id="btn-corriger-frais-forfait" class="btn btn-success btn-corriger" type="button">Corriger</button>
                 <button class="btn btn-danger btn-reinitialiser" type="button">Réinitialiser</button>
             </fieldset>
         </form>

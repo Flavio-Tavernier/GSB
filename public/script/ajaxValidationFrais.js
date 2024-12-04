@@ -22,8 +22,8 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('lstVisiteur').addEventListener('change', 
     function() {ajaxGetLesMoisDisponibles();});    
 
-    // document.getElementsByClassName('btn-corriger').addEventListener('click', 
-    //     function() {ajaxMajFraisForfait();});  
+    document.getElementById('btn-corriger-frais-forfait').addEventListener('click', 
+        function() {ajaxMajFraisForfait();});  
 });
 
 
@@ -236,19 +236,18 @@ function ajaxMajFraisForfait() {
     let prenom = nomPrenom[1];
     let nom = nomPrenom[0];
 
-    let arrayDesFrais = [];
-    arrayDesFrais.push(document.getElementById("inputETP").value);
-    arrayDesFrais.push(document.getElementById("inputKM").value)
-    arrayDesFrais.push(document.getElementById("inputNUI").value)
-    arrayDesFrais.push(document.getElementById("inputREP").value)
+    let forfaitEtape = document.getElementById("inputETP").value;
+    let fraisKilometrique = document.getElementById("inputKM").value;
+    let nuiteeHotel = document.getElementById("inputNUI").value;
+    let repasRestaurant = document.getElementById("inputREP").value;
 
-    arrayDesFrais = encodeURIComponent(JSON.stringify(arrayDesFrais));
+    let objetDesFraisForfait = {"ETP" : forfaitEtape, "KM" : fraisKilometrique, "NUI" : nuiteeHotel, "REP" : repasRestaurant};
 
     var xhr=new XMLHttpRequest();
     xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxMajFraisForfait&nom=" + nom + 
             "&prenom=" + prenom + 
             "&mois=" + mois +
-            "&lesFrais=" + arrayDesFrais, true);
+            "&lesFrais=" + JSON.stringify(objetDesFraisForfait));
 
     xhr.onload = function() {
         if (xhr.status === 200) {
