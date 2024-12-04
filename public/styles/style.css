@@ -33,12 +33,19 @@ code {
   font-size: 80%;
 }
 
-.btnComptable{
-    background-color: #FF8800;
+.btnComptable > a{
+    background-color: #FF8800 !important;
+    color: #FFFFFF !important;
 }
 
-.champsVerticaux {
-    display: flex;
-    flex-direction: column;
+.bgComptable{
+    background-color: #FF8800 !important;
 }
 
+.txtComptable{
+    color: #FF8800 !important;
+}
+
+.borderComptable{
+    border-color: #FF8800 !important;
+}
