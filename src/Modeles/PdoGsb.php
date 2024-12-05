@@ -609,7 +609,7 @@ class PdoGsb
     {
         $requetePrepare = $this->connexion->prepare(
             'SELECT visiteur.nom as nom, visiteur.prenom as prenom ' 
-            . 'FROM visiteur WHERE visiteur.comptable is false'
+            . 'FROM visiteur'
         );
         $requetePrepare->execute();
         return $requetePrepare->fetchAll();
