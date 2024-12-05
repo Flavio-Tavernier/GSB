@@ -201,6 +201,31 @@ class PdoGsb
     }
 
     /**
+     * Retourne sous forme d'un tableau associatif toutes les lignes de frais
+     * hors forfait concernées par les deux arguments déstiné à la validation par comptable.
+     *
+     * @param String $idVisiteur ID du visiteur
+     * @param String $mois       Mois sous la forme aaaamm
+     *
+     * @return tous les champs des lignes de frais hors forfait sous la forme
+     * d'un tableau associatif
+     */
+    public function getLesFraisHorsForfaitValidation($idVisiteur, $mois): array
+    {
+        $requetePrepare = $this->connexion->prepare(
+            'SELECT * FROM lignefraishorsforfait '
+            . 'WHERE lignefraishorsforfait.idvisiteur = :unIdVisiteur '
+            . 'AND lignefraishorsforfait.mois = :unMois'
+        );
+        $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        $lesLignes = $requetePrepare->fetchAll();
+
+        return $lesLignes;
+    }
+
+    /**
      * Retourne le nombre de justificatif d'un visiteur pour un mois donné
      *
      * @param String $idVisiteur ID du visiteur
@@ -294,8 +319,37 @@ class PdoGsb
             $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
             $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
             $requetePrepare->bindParam(':idFrais', $unIdFrais, PDO::PARAM_STR);
+            
             $requetePrepare->execute();
         }
+    }
+
+
+    /**
+     * Met à jour la table ligneFraisHorsForfait
+     * Met à jour la table ligneFraisHorsForfait pour un visiteur et
+     * un mois donné en enregistrant les nouveaux montants
+     *
+     * @param Array  $lesFrais   tableau associatif de clé idFrais et
+     *                           de valeur la quantité pour ce frais
+     *
+     * @return null
+     */
+    public function majFraisHorsForfait($idFraisHorsForfait, $fraisHorsForfait): void
+    {
+        $requetePrepare = $this->connexion->prepare(
+            'UPDATE lignefraisHorsforfait '
+            . 'SET lignefraisHorsforfait.libelle = :libelle, '
+            . 'lignefraisHorsforfait.date = :date, '
+            . 'lignefraisHorsforfait.montant = :montant '
+            . 'WHERE lignefraisHorsforfait.id = :idFraisHorsForfait '
+        );
+        $requetePrepare->bindParam(':libelle', $fraisHorsForfait['libelle'], PDO::PARAM_STR);
+        $requetePrepare->bindParam(':date', $fraisHorsForfait['date'], PDO::PARAM_STR);
+        $requetePrepare->bindParam(':montant', $fraisHorsForfait['montant'], PDO::PARAM_STR);
+        $requetePrepare->bindParam(':idFraisHorsForfait', $idFraisHorsForfait, PDO::PARAM_INT);
+        
+        $requetePrepare->execute();
     }
 
     /**
@@ -471,10 +525,10 @@ class PdoGsb
     {
         $requetePrepare = $this->connexion->prepare(
             'SELECT fichefrais.mois AS mois FROM fichefrais '
-            . 'WHERE fichefrais.idvisiteur = :unIdVisiteur '
+            . 'WHERE fichefrais.idvisiteur = :idVisiteur '
             . 'ORDER BY fichefrais.mois desc'
         );
-        $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':idVisiteur', $idVisiteur, PDO::PARAM_STR);
         $requetePrepare->execute();
         $lesMois = array();
         while ($laLigne = $requetePrepare->fetch()) {
@@ -546,4 +600,45 @@ class PdoGsb
     
     
     
+    /**
+     * Récupère tous les visiteurs qui ne sont pas des comptables
+     * 
+     * @return array
+     */
+    public function getVisiteurs(): array 
+    {
+        $requetePrepare = $this->connexion->prepare(
+            'SELECT visiteur.nom as nom, visiteur.prenom as prenom ' 
+            . 'FROM visiteur'
+        );
+        $requetePrepare->execute();
+        return $requetePrepare->fetchAll();
+    }
+
+     /**
+     * Récupère l'id du visiteur dont le nom et prenom 
+     * est passé en paramètre
+     * 
+     * @param String $nom Nom du visiteur
+     * @param String $prenom Prenom du visiteur
+     *
+     * @return String
+     */
+    public function getIdVisiteur($nom, $prenom): String 
+    {
+        $requetePrepare = $this->connexion->prepare(
+            'SELECT visiteur.id as id FROM visiteur ' 
+            . 'WHERE visiteur.nom = :nom ' 
+            . 'AND visiteur.prenom = :prenom '
+        );
+        $requetePrepare->bindParam(':nom', $nom, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':prenom', $prenom, PDO::PARAM_STR);
+        $requetePrepare->execute();
+
+        return $requetePrepare->fetchColumn();
+    }
+    
+    
 }
+
+ 
