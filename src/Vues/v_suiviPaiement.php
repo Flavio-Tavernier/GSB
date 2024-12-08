@@ -44,8 +44,8 @@
         <tbody>
             <?php foreach ($fichesfrais as $fichefrais): ?>
                 <tr>
-                    <td><?= htmlspecialchars($utilisateur->date) ?></td>
-                    <td><?= htmlspecialchars($utilisateur->etat) ?></td>
+                    <td><?= htmlspecialchars($fichefrais->date) ?></td>
+                    <td><?= htmlspecialchars($fichefrais->etat) ?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
