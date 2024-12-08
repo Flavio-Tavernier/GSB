@@ -56,6 +56,9 @@ switch ($uc) {
     case 'validationFrais':
         include PATH_CTRLS . 'c_validationFrais.php';
         break;
+    case 'suiviPaiement':
+        include PATH_CTRLS . 'c_suiviPaiement.php';
+        break;
     case 'ajax':
         include PATH_CTRLS . 'c_ajax.php';
         break;
