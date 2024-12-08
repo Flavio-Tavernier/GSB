@@ -114,6 +114,8 @@ function ajoutElementLstDatesFicheFrais(datesFichesFrais)
 
 
 /**
+ * fonction ajax qui récupère nom/prénom d'un visiteur
+ * en paramètre afin de récupérer les valeurs des frais forfaits
  * 
  * @param string nom nom d'un visiteur
  * @param string prenom prenom d'un visiteur
@@ -163,7 +165,8 @@ function injectValuesInputsValidationFraisForfaits(valuesInputsValidationFraisFo
 
 
 /**
- * 
+ * fonction ajax qui récupère nom/prénom d'un visiteur
+ * en paramètre afin de récupérer les valeurs des frais hors forfait
  * @param string nom nom d'un visiteur
  * @param string prenom prenom d'un visiteur
  *
@@ -219,8 +222,12 @@ function injectValuesInputsValidationFraisHorsForfait(valuesInputsValidationFrai
         "<td><input value='" + date + "' type='date'/></td>" +
         "<td><input value='" + libelle + "'/></td>" +          
         "<td><input value='" + montant + "'/></td>" +                                         
-        "<td><button class='btn btn-success btn-corriger btn-corriger-frais-hors-forfait' type='button'>Corriger</button>" + 
-        "<button class='btn btn-danger btn-reinitialiser' type='button'>Réinitialiser</button></td></tr>";
+        "<td>" +
+        "<button class='btn btn-success btn-corriger btn-corriger-frais-hors-forfait' type='button'>Corriger</button>" + 
+        "<button class='btn btn-warning btn-reinitialiser' type='button'>Réinitialiser</button>" +
+        "<button class='btn btn-danger btn-refuser-frais-hors-forfait' type='button'>Refuser</button>"
+        "</td>" +
+        "</tr>";
     } 
 
 
@@ -236,10 +243,22 @@ function injectValuesInputsValidationFraisHorsForfait(valuesInputsValidationFrai
             ajaxMajFraisHorsForfait(element.target.parentNode.parentNode.id);
         });
     });
+
+    document.querySelectorAll('.btn-refuser-frais-hors-forfait').forEach(unBtnReinitialser => {
+        unBtnReinitialser.addEventListener('click', function(element) {
+            ajaxRefuserFraisHorsForfait(element.target.parentNode.parentNode.id);
+        });
+    });
 }
 
 
 
+/**
+ * Fonction ajax qui récupère le nom/prénom et les frais forfait 
+ * d'un visiteur pour mettre à jour les informations en BDD
+ *
+ * 
+ */
 function ajaxMajFraisForfait() {
     let mois = recupereMois();
 
@@ -262,7 +281,6 @@ function ajaxMajFraisForfait() {
 
     xhr.onload = function() {
         if (xhr.status === 200) {
-            // ajaxGetValuesInputsValidationFraisForfaits(nom, prenom)
         } else {
             console.error('Error:', xhr.statusText);
         }
@@ -271,6 +289,12 @@ function ajaxMajFraisForfait() {
 }
 
 
+/**
+ * Fonction ajax qui récupère le nom/prénom et les frais hors forfait 
+ * d'un visiteur pour mettre à jour les informations en BDD
+ *
+ * 
+ */
 function ajaxMajFraisHorsForfait(idFraisHorsForfait) {
     let ligneFraisHorsForfait = window.document.getElementById(idFraisHorsForfait).children;
     let objetFraisHorsForfait = {"date" : "", "libelle" : "", "montant" : ""};
@@ -281,15 +305,13 @@ function ajaxMajFraisHorsForfait(idFraisHorsForfait) {
         i++;
     }
     
-    console.log(objetFraisHorsForfait);
-    
     var xhr=new XMLHttpRequest();
     xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxMajFraisHorsForfait&idFraisHorsForfait=" + idFraisHorsForfait +
             "&lesFraisHorsForfait=" + JSON.stringify(objetFraisHorsForfait));
 
     xhr.onload = function() {
         if (xhr.status === 200) {
-            console.log(xhr.response);
+            // console.log(xhr.response);
         } else {
             console.error('Error:', xhr.statusText);
         }
@@ -297,4 +319,26 @@ function ajaxMajFraisHorsForfait(idFraisHorsForfait) {
     xhr.send();
 }
 
+
+/**
+ * Fonction ajax qui récupère l'id d'un frais hors forfait d'un visiteur 
+ * en paramètre pour mettre à jour les informations en BDD
+ *
+ * @param array idFraisHorsForfait Id d'un frais hors forfait
+ * 
+ */
+function ajaxRefuserFraisHorsForfait(idFraisHorsForfait)
+{
+    var xhr=new XMLHttpRequest();
+    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxRefuserFraisHorsForfait&idFraisHorsForfait=" + idFraisHorsForfait);
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            document.getElementById(idFraisHorsForfait).remove();
+        } else {
+            console.error('Error:', xhr.statusText);
+        }
+    };
+    xhr.send();
+}
 

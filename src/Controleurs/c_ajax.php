@@ -16,7 +16,7 @@ use Outils\Utilitaires;
 
 /**
  * Si dans l'url, le paramètre 'fonction' est présent alors, 
- * recupère le nom de la fonction et execute la voulue 
+ * recupère le nom de la fonction et execute le traitement voulu 
  * en passant par un 'switch case'. Celui-ci permet un ajout de futures
  * fonctions facilité
  */
@@ -66,10 +66,15 @@ if (isset($_GET['fonction'])) {
             $pdo->majFraisForfait($idVisiteur, $mois, $lesFrais);
             break;
         case 'ajaxMajFraisHorsForfait':
-            $idFraisHorsForfait = $_GET['idFraisHorsForfait'];
+            $idFraisHorsForfait = filter_input(INPUT_GET, 'idFraisHorsForfait', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $fraisHorsForfait = json_decode($_GET['lesFraisHorsForfait'], true);
 
             $pdo->majFraisHorsForfait($idFraisHorsForfait, $fraisHorsForfait);
+            break;
+        case 'ajaxRefuserFraisHorsForfait':
+            $idFraisHorsForfait = filter_input(INPUT_GET, 'idFraisHorsForfait', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            $pdo->refuserFraisHorsForfait($idFraisHorsForfait);
             break;
         default :
             throw new Exception($fonction . " ---> Fonction Ajax Inconnue");

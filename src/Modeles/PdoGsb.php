@@ -215,7 +215,8 @@ class PdoGsb
         $requetePrepare = $this->connexion->prepare(
             'SELECT * FROM lignefraishorsforfait '
             . 'WHERE lignefraishorsforfait.idvisiteur = :unIdVisiteur '
-            . 'AND lignefraishorsforfait.mois = :unMois'
+            . 'AND lignefraishorsforfait.mois = :unMois '
+            . 'AND libelle NOT LIKE "REFUSE :%"'
         );
         $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
         $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
@@ -510,6 +511,24 @@ class PdoGsb
             . 'WHERE lignefraishorsforfait.id = :unIdFrais'
         );
         $requetePrepare->bindParam(':unIdFrais', $idFrais, PDO::PARAM_STR);
+        $requetePrepare->execute();
+    }
+
+    /**
+     * Refuser le frais hors forfait dont l'id est passé en argument
+     *
+     * @param String $idFraisHorsForfait ID du frais
+     *
+     * @return null
+     */
+    public function refuserFraisHorsForfait($idFraisHorsForfait): void
+    {
+        $requetePrepare = $this->connexion->prepare(
+            'UPDATE lignefraishorsforfait '
+            . 'SET libelle = CONCAT("REFUSE : ", libelle) '
+            . 'WHERE lignefraishorsforfait.id = :unIdFrais'
+        );
+        $requetePrepare->bindParam(':unIdFrais', $idFraisHorsForfait, PDO::PARAM_STR);
         $requetePrepare->execute();
     }
 
