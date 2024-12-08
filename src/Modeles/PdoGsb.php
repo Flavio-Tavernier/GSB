@@ -100,7 +100,8 @@ class PdoGsb
         );
         $requetePrepare->bindParam(':unLogin', $login, PDO::PARAM_STR);
         $requetePrepare->execute();
-        return $requetePrepare->fetch();
+        $utilisateur = $requetePrepare->fetch();
+        return $utilisateur ? $utilisateur : [];
     }
     
     public function getMdpUtilisateur($login) {
