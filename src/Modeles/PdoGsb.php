@@ -100,7 +100,8 @@ class PdoGsb
         );
         $requetePrepare->bindParam(':unLogin', $login, PDO::PARAM_STR);
         $requetePrepare->execute();
-        return $requetePrepare->fetch();
+        $utilisateur = $requetePrepare->fetch();
+        return $utilisateur ? $utilisateur : [];
     }
     
     public function getMdpUtilisateur($login) {
@@ -130,7 +131,12 @@ class PdoGsb
         } 
     }
     
-    public function hashAllPwd(): bool
+    /**
+     * Hashe tous les mots de passe des utilisateurs de la base de donnée
+     *
+     * @return Rien
+     */
+    public function hashAllPwd(): void
     {
         $requetePrepare = $this->connexion->prepare(
             'SELECT comptable.mdp AS mdp, comptable.id as id '
