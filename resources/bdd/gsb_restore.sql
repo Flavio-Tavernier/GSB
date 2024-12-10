@@ -1,5 +1,5 @@
 -- Script de restauration de l'application "GSB Frais"
-
+drop database gsb_frais;
 -- Administration de la base de données
 CREATE DATABASE IF NOT EXISTS gsb_frais 
 DEFAULT CHARACTER SET utf8
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS fraisforfait (
 
 CREATE TABLE IF NOT EXISTS etat (
   id char(2) NOT NULL,
-  libelle varchar(30) DEFAULT NULL,
+  libelle varchar(33) DEFAULT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
@@ -99,7 +99,8 @@ INSERT INTO etat (id, libelle) VALUES
 ('RB', 'Remboursée'),
 ('CL', 'Saisie clôturée'),
 ('CR', 'Fiche créée, saisie en cours'),
-('VA', 'Validée et mise en paiement');
+('AR', 'Fiche en attente de remboursement'),
+('VA', 'Validée');
 
 -- Récupération des utilisateurs
 INSERT INTO `comptable` VALUES 
@@ -657,7 +658,7 @@ INSERT INTO `fichefrais` VALUES
 ('a118y','202404',7,4234.38,'2024-06-02','RB'),
 ('a118y','202405',4,2079.50,'2024-07-06','RB'),
 ('a118y','202406',5,2145.58,'2024-08-03','RB'),
-('a118y','202407',8,3962.99,'2024-08-08','VA'),
+('a118y','202407',8,3962.99,'2024-08-08','AR'),
 ('a118y','202408',2,0.00,'2024-08-02','CR'),
 ('a188n','202309',1,3255.75,'2023-11-03','RB'),
 ('a188n','202310',12,3243.28,'2023-12-07','RB'),
