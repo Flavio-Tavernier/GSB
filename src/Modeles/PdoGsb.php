@@ -633,7 +633,7 @@ class PdoGsb
     public function getVisiteurs(): array 
     {
         $requetePrepare = $this->connexion->prepare(
-            'SELECT visiteur.nom as nom, visiteur.prenom as prenom ' 
+            'SELECT visiteur.id as id, visiteur.nom as nom, visiteur.prenom as prenom ' 
             . 'FROM visiteur'
         );
         $requetePrepare->execute();

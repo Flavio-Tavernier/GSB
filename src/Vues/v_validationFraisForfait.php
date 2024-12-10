@@ -25,8 +25,10 @@
             foreach($visiteurs as $unVisiteur) {
                 $nomVisiteur = $unVisiteur['nom'];
                 $prenomVisiteur = $unVisiteur['prenom'];
+                $idVisiteur = $unVisiteur['id'];
         ?>
-            <option value="<?php echo $nomVisiteur; echo " " . $prenomVisiteur; ?>"><?php echo $nomVisiteur; echo " " . $prenomVisiteur; ?></option>
+            <option id="<?php echo $idVisiteur;?>" value="<?php echo $nomVisiteur; echo " " . $prenomVisiteur; ?>">
+                <?php echo $nomVisiteur; echo " " . $prenomVisiteur; ?></option>
         <?php
             }
         ?>

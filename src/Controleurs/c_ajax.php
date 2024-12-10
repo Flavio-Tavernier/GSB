@@ -25,41 +25,28 @@ if (isset($_GET['fonction'])) {
     
     switch ($fonction) {
         case "ajaxGetLesMoisDisponibles" :
-            // FIXME: filter input
-            $nom = filter_input(INPUT_GET, 'nom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $prenom = $_GET["prenom"];
+            $idVisiteur = filter_input(INPUT_GET, 'idVisiteur', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            $idVisiteur = $pdo->getIdVisiteur($nom, $prenom);
             $lesMoisDisponibles = $pdo->getLesMoisDisponibles($idVisiteur);
-            
             echo json_encode($lesMoisDisponibles);
             break;
-        case "ajaxGetValuesInputsValidationFraisForfaits" :
-            // FIXME: filter input
-            $nom = filter_input(INPUT_GET, 'nom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $prenom = $_GET['prenom'];
+        case "ajaxGetFraisForfaits" :
+            $idVisiteur = filter_input(INPUT_GET, 'idVisiteur', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $mois = filter_input(INPUT_GET, 'mois', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            $idVisiteur = $pdo->getIdVisiteur($nom, $prenom);
             $valuesInputsValidationFrais = $pdo->getLesFraisForfait($idVisiteur, $mois);
-            
             echo json_encode($valuesInputsValidationFrais);
             break;
-        case "ajaxGetValuesInputsValidationFraisHorsForfait" :
-            // FIXME: filter input
-            $nom = filter_input(INPUT_GET, 'nom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $prenom = $_GET["prenom"];
+        case "ajaxGetFraisHorsForfait" :
+            $idVisiteur = filter_input(INPUT_GET, 'idVisiteur', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $mois = filter_input(INPUT_GET, 'mois', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            $idVisiteur = $pdo->getIdVisiteur($nom, $prenom);
             $valuesInputsValidationFraisHorsForfait = $pdo -> getLesFraisHorsForfaitValidation($idVisiteur, $mois);
-
             echo json_encode($valuesInputsValidationFraisHorsForfait);
             break;
         case 'ajaxMajFraisForfait':
             // FIXME: filter input
-            $idVisiteur = $pdo->getIdVisiteur(filter_input(INPUT_GET, 'nom', FILTER_SANITIZE_FULL_SPECIAL_CHARS), 
-            $_GET["prenom"]);
+            $idVisiteur = filter_input(INPUT_GET, 'idVisiteur', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $mois = filter_input(INPUT_GET, 'mois', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $lesFrais = json_decode($_GET["lesFrais"], true);
 
@@ -75,6 +62,12 @@ if (isset($_GET['fonction'])) {
             $idFraisHorsForfait = filter_input(INPUT_GET, 'idFraisHorsForfait', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
             $pdo->refuserFraisHorsForfait($idFraisHorsForfait);
+            break;
+        case 'ajaxValiderFicheFrais':
+            $idVisiteur = filter_input(INPUT_GET, 'idVisiteur', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $mois = filter_input(INPUT_GET, 'mois', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            $pdo->majEtatFicheFrais($idVisiteur, $mois, "VA");
             break;
         default :
             throw new Exception($fonction . " ---> Fonction Ajax Inconnue");

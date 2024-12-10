@@ -14,16 +14,16 @@
  * 
  */
 document.addEventListener("DOMContentLoaded", function() {
-    let nomPrenom = recupereNomPrenom();
-    let prenom = nomPrenom[1];
-    let nom = nomPrenom[0];
-    
-    ajaxGetLesMoisDisponibles(nom, prenom);
+    ajaxGetLesMoisDisponibles();
+
     document.getElementById('lstVisiteur').addEventListener('change', 
     function() {ajaxGetLesMoisDisponibles();});    
 
     document.getElementById('btn-corriger-frais-forfait').addEventListener('click', 
         function() {ajaxMajFraisForfait();});  
+
+    document.getElementById('btn-valider-fiche-frais').addEventListener('click', 
+        function() {ajaxValiderFichefrais();});
 });
 
 
@@ -36,6 +36,21 @@ function recupereNomPrenom()
 {
     // FIXME:le système de recup nom prenom n'est pas bon pour tous les cas d'utilisation
     return document.getElementById('lstVisiteur').value.split(" ");
+}
+
+
+/**
+ * Récupère l'id d'un visiteur 
+ * dans la balise 'option' elle même dans la balise 'select'.
+ * 
+ */
+function recupereIdvisiteur()
+{
+    // FIXME:le système de recup nom prenom n'est pas bon pour tous les cas d'utilisation
+    let lstVisiteur = document.getElementById('lstVisiteur');
+    let idVisiteur = lstVisiteur.options[lstVisiteur.selectedIndex].id; 
+
+    return idVisiteur;
 }
 
 
@@ -61,26 +76,25 @@ function recupereMois()
  */
 function ajaxGetLesMoisDisponibles() 
 {
-    let nomPrenom = recupereNomPrenom();
-    let prenom = nomPrenom[1];
-    let nom = nomPrenom[0];
+    let idVisiteur = recupereIdvisiteur();
+    
 
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxGetLesMoisDisponibles&nom=" + nom + "&prenom=" + prenom, true);
+    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxGetLesMoisDisponibles&idVisiteur=" + idVisiteur, true);
 
     xhr.onload = function() {
         if (xhr.status === 200) {
             document.getElementById("lstDatesFicheFrais").innerHTML = "";
             ajoutElementLstDatesFicheFrais(JSON.parse(xhr.responseText));
 
-            ajaxGetValuesInputsValidationFraisForfaits(recupereNomPrenom()[0], recupereNomPrenom()[1]);
-            ajaxGetValuesInputsValidationFraisHorsForfait(recupereNomPrenom()[0], recupereNomPrenom()[1]);
+            ajaxGetFraisForfaits();
+            ajaxGetFraisHorsForfait();
 
             document.getElementById('lstDatesFicheFrais').addEventListener('change', 
-            function() {ajaxGetValuesInputsValidationFraisForfaits(recupereNomPrenom()[0], recupereNomPrenom()[1]);});
+            function() {ajaxGetFraisForfaits();});
 
             document.getElementById('lstDatesFicheFrais').addEventListener('change', 
-            function() {ajaxGetValuesInputsValidationFraisHorsForfait(recupereNomPrenom()[0], recupereNomPrenom()[1]);});
+            function() {ajaxGetFraisHorsForfait();});
 
 
         } else {
@@ -123,19 +137,19 @@ function ajoutElementLstDatesFicheFrais(datesFichesFrais)
  * @return json 
  * 
  */
-function ajaxGetValuesInputsValidationFraisForfaits(nom, prenom) 
+function ajaxGetFraisForfaits() 
 {
+    let idVisiteur = recupereIdvisiteur();
     let mois = recupereMois();
         
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxGetValuesInputsValidationFraisForfaits&nom=" + nom + 
-            "&prenom=" + prenom + 
+    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxGetFraisForfaits&idVisiteur=" + idVisiteur + 
             "&mois=" + mois, true);
 
     xhr.onload = function() {
         if (xhr.status === 200) {
-            let valuesInputsValidationFraisForfaits = JSON.parse(xhr.responseText);
-            injectValuesInputsValidationFraisForfaits(valuesInputsValidationFraisForfaits);
+            let valuesInputsFraisForfaits = JSON.parse(xhr.responseText);
+            injectValuesInputsFraisForfaits(valuesInputsFraisForfaits);
         } else {
             console.error('Error:', xhr.statusText);
         }
@@ -148,14 +162,14 @@ function ajaxGetValuesInputsValidationFraisForfaits(nom, prenom)
  * Injecte les donner récupérées en BDD dans les 'iputs' de la vue
  * 'validationFrais' 
  * 
- * @param array valuesInputsValidationFraisForfaits Tableau des frais forfaits
+ * @param array valuesInputsFraisForfaits Tableau des frais forfaits
  *
  * 
  */
-function injectValuesInputsValidationFraisForfaits(valuesInputsValidationFraisForfaits)
+function injectValuesInputsFraisForfaits(valuesInputsFraisForfaits)
 {
-    for (let i = 0;i < valuesInputsValidationFraisForfaits.length;i++) {
-       document.getElementById("input" + valuesInputsValidationFraisForfaits[i][0]).value = valuesInputsValidationFraisForfaits[i][2];
+    for (let i = 0;i < valuesInputsFraisForfaits.length;i++) {
+       document.getElementById("input" + valuesInputsFraisForfaits[i][0]).value = valuesInputsFraisForfaits[i][2];
     } 
 }
 
@@ -173,19 +187,19 @@ function injectValuesInputsValidationFraisForfaits(valuesInputsValidationFraisFo
  * @return json 
  * 
  */
-function ajaxGetValuesInputsValidationFraisHorsForfait(nom, prenom) 
+function ajaxGetFraisHorsForfait() 
 {
+    let idVisiteur = recupereIdvisiteur();
     let mois = recupereMois();
         
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxGetValuesInputsValidationFraisHorsForfait&nom=" + nom + 
-            "&prenom=" + prenom + 
+    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxGetFraisHorsForfait&idVisiteur=" + idVisiteur + 
             "&mois=" + mois, true);
 
     xhr.onload = function() {
         if (xhr.status === 200) {             
-            let valuesInputsValidationFraisHorsForfait = JSON.parse(xhr.responseText);            
-            injectValuesInputsValidationFraisHorsForfait(valuesInputsValidationFraisHorsForfait);
+            let valuesInputsFraisHorsForfait = JSON.parse(xhr.responseText);            
+            injectValuesInputsFraisHorsForfait(valuesInputsFraisHorsForfait);
         } else {
             console.error('Error:', xhr.statusText);
         }
@@ -199,10 +213,10 @@ function ajaxGetValuesInputsValidationFraisHorsForfait(nom, prenom)
  * Injecte les donner récupérées en BDD dans les 'iputs' de la vue
  * 'validationFraisHorsForfait' 
  * 
- * @param array valuesInputsValidationFraisHorsForfait Tableau des frais hors forfait
+ * @param array valuesInputsFraisHorsForfait Tableau des frais hors forfait
  *
  */
-function injectValuesInputsValidationFraisHorsForfait(valuesInputsValidationFraisHorsForfait)
+function injectValuesInputsFraisHorsForfait(valuesInputsFraisHorsForfait)
 {
     let nomPrenom = recupereNomPrenom();
     let prenom = nomPrenom[1];
@@ -211,11 +225,11 @@ function injectValuesInputsValidationFraisHorsForfait(valuesInputsValidationFrai
 
     document.getElementById("container-values-frais-hors-forfait").innerHTML = "";
 
-    for (let i = 0;i < valuesInputsValidationFraisHorsForfait.length;i++) {
-        let id = valuesInputsValidationFraisHorsForfait[i]['id'];
-        let date = valuesInputsValidationFraisHorsForfait[i]['date'];
-        let libelle = valuesInputsValidationFraisHorsForfait[i]['libelle'];
-        let montant = valuesInputsValidationFraisHorsForfait[i]['montant'];
+    for (let i = 0;i < valuesInputsFraisHorsForfait.length;i++) {
+        let id = valuesInputsFraisHorsForfait[i]['id'];
+        let date = valuesInputsFraisHorsForfait[i]['date'];
+        let libelle = valuesInputsFraisHorsForfait[i]['libelle'];
+        let montant = valuesInputsFraisHorsForfait[i]['montant'];
 
         document.getElementById("container-values-frais-hors-forfait").innerHTML += 
         "<tr id='" + id  + "'>" +
@@ -233,8 +247,8 @@ function injectValuesInputsValidationFraisHorsForfait(valuesInputsValidationFrai
 
     document.querySelectorAll('.btn-reinitialiser').forEach(unBtnReinitialser => {
         unBtnReinitialser.addEventListener('click', function() {
-            ajaxGetValuesInputsValidationFraisForfaits(nom, prenom);
-            ajaxGetValuesInputsValidationFraisHorsForfait(nom, prenom);
+            ajaxGetFraisForfaits(nom, prenom);
+            ajaxGetFraisHorsForfait(nom, prenom);
         });
     });
 
@@ -262,9 +276,7 @@ function injectValuesInputsValidationFraisHorsForfait(valuesInputsValidationFrai
 function ajaxMajFraisForfait() {
     let mois = recupereMois();
 
-    let nomPrenom = recupereNomPrenom();
-    let prenom = nomPrenom[1];
-    let nom = nomPrenom[0];
+    let idVisiteur = recupereIdvisiteur();
 
     let forfaitEtape = document.getElementById("inputETP").value;
     let fraisKilometrique = document.getElementById("inputKM").value;
@@ -274,8 +286,7 @@ function ajaxMajFraisForfait() {
     let objetDesFraisForfait = {"ETP" : forfaitEtape, "KM" : fraisKilometrique, "NUI" : nuiteeHotel, "REP" : repasRestaurant};
 
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxMajFraisForfait&nom=" + nom + 
-            "&prenom=" + prenom + 
+    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxMajFraisForfait&idVisiteur=" + idVisiteur + 
             "&mois=" + mois +
             "&lesFrais=" + JSON.stringify(objetDesFraisForfait));
 
@@ -342,3 +353,28 @@ function ajaxRefuserFraisHorsForfait(idFraisHorsForfait)
     xhr.send();
 }
 
+
+
+/**
+ * Fonction ajax qui récupère l'id d'un frais hors forfait d'un visiteur 
+ * et le mois de fiche de frais pour la valider
+ *
+ * 
+ */
+function ajaxValiderFichefrais() 
+{
+    let idVisiteur = recupereIdvisiteur();
+    let mois = recupereMois();
+
+    var xhr=new XMLHttpRequest();
+    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxValiderFicheFrais&idVisiteur=" + idVisiteur + "&mois=" + mois);
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // console.log(xhr.response);
+        } else {
+            console.error('Error:', xhr.statusText);
+        }
+    };
+    xhr.send(); 
+}
