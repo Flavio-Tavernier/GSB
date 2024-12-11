@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function() {
         function() {ajaxMajFraisForfait();});  
 
     document.getElementById('btn-valider-fiche-frais').addEventListener('click', 
-        function() {ajaxValiderFichefrais();});
+        function() {ajaxValiderFichefrais(); ajaxMajNbJustificaifs();});
 });
 
 
@@ -89,13 +89,10 @@ function ajaxGetLesMoisDisponibles()
 
             ajaxGetFraisForfaits();
             ajaxGetFraisHorsForfait();
+            ajaxGetNbjustificatifs();
 
             document.getElementById('lstDatesFicheFrais').addEventListener('change', 
-            function() {ajaxGetFraisForfaits();});
-
-            document.getElementById('lstDatesFicheFrais').addEventListener('change', 
-            function() {ajaxGetFraisHorsForfait();});
-
+            function() {ajaxGetFraisForfaits(); ajaxGetFraisHorsForfait(); ajaxGetNbjustificatifs();});
 
         } else {
             console.error('Error:', xhr.statusText);
@@ -218,11 +215,6 @@ function ajaxGetFraisHorsForfait()
  */
 function injectValuesInputsFraisHorsForfait(valuesInputsFraisHorsForfait)
 {
-    let nomPrenom = recupereNomPrenom();
-    let prenom = nomPrenom[1];
-    let nom = nomPrenom[0];
-
-
     document.getElementById("container-values-frais-hors-forfait").innerHTML = "";
 
     for (let i = 0;i < valuesInputsFraisHorsForfait.length;i++) {
@@ -247,8 +239,9 @@ function injectValuesInputsFraisHorsForfait(valuesInputsFraisHorsForfait)
 
     document.querySelectorAll('.btn-reinitialiser').forEach(unBtnReinitialser => {
         unBtnReinitialser.addEventListener('click', function() {
-            ajaxGetFraisForfaits(nom, prenom);
-            ajaxGetFraisHorsForfait(nom, prenom);
+            ajaxGetFraisForfaits();
+            ajaxGetFraisHorsForfait();
+            ajaxGetNbjustificatifs();
         });
     });
 
@@ -264,6 +257,62 @@ function injectValuesInputsFraisHorsForfait(valuesInputsFraisHorsForfait)
         });
     });
 }
+
+
+/**
+ * Fonction ajax qui récupère l'id 
+ * d'un visiteur et le mois d'une fiche de frais 
+ * pour récupérer le nombre de justificatifs
+ * 
+ */
+function ajaxGetNbjustificatifs() {
+    let idVisiteur = recupereIdvisiteur();
+    let mois = recupereMois();
+    
+    
+    var xhr=new XMLHttpRequest();
+    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxGetNbjustificatifs&idVisiteur=" + idVisiteur + 
+            "&mois=" + mois);
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            document.getElementById("inputNbJustificatifs").value = JSON.parse(xhr.response);
+        } else {
+            console.error('Error:', xhr.statusText);
+        }
+    };
+    xhr.send();
+}
+
+/**
+ * Fonction ajax qui récupère l'id d'un visiteur, 
+ * le mois et le nombre de justificatifs
+ * afin de mettre à jour le nombre de justificatifs
+ *
+ * 
+ */
+function ajaxMajNbJustificaifs() 
+{
+    let idVisiteur = recupereIdvisiteur();
+    let mois = recupereMois();
+    let nbJustificatifs = document.getElementById("inputNbJustificatifs").value;
+
+    var xhr=new XMLHttpRequest();
+    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxMajNbJustificaifs&idVisiteur=" + idVisiteur + 
+        "&mois=" + mois +
+        "&nbJustificatifs=" + nbJustificatifs);
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // console.log(xhr.response);
+        } else {
+            console.error('Error:', xhr.statusText);
+        }
+    };
+    xhr.send(); 
+}
+
+
 
 
 
@@ -292,6 +341,8 @@ function ajaxMajFraisForfait() {
 
     xhr.onload = function() {
         if (xhr.status === 200) {
+            // console.log(xhr.response);
+            
         } else {
             console.error('Error:', xhr.statusText);
         }
@@ -378,3 +429,5 @@ function ajaxValiderFichefrais()
     };
     xhr.send(); 
 }
+
+

@@ -241,7 +241,7 @@ class PdoGsb
      * @return le nombre entier de justificatifs
      */
     public function getNbjustificatifs($idVisiteur, $mois): int
-    {
+    { 
         $requetePrepare = $this->connexion->prepare(
             'SELECT fichefrais.nbjustificatifs as nb FROM fichefrais '
             . 'WHERE fichefrais.idvisiteur = :unIdVisiteur '
@@ -251,6 +251,7 @@ class PdoGsb
         $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
         $requetePrepare->execute();
         $laLigne = $requetePrepare->fetch();
+
         return $laLigne['nb'];
     }
 
@@ -622,9 +623,7 @@ class PdoGsb
         $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
         $requetePrepare->execute();
     }
-    
-    
-    
+
     /**
      * Récupère tous les visiteurs qui ne sont pas des comptables
      * 
