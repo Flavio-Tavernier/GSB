@@ -1,5 +1,4 @@
 -- Script de restauration de l'application "GSB Frais"
-drop database gsb_frais;
 -- Administration de la base de données
 CREATE DATABASE IF NOT EXISTS gsb_frais 
 DEFAULT CHARACTER SET utf8
@@ -55607,3 +55606,11 @@ INSERT INTO `lignefraishorsforfait` VALUES
 (22655,'v959e','202408','Achat d\'espace publicitaire','2024-08-14',27.00),
 (22656,'v959e','202408','Traiteur, alimentation, boisson','2024-08-27',340.00),
 (22657,'v959e','202408','Repas avec praticien','2024-08-26',47.00);
+
+ALTER TABLE visiteur ADD email TEXT NULL;
+UPDATE visiteur SET email = CONCAT(login,"@swiss-galaxy.com");
+ALTER TABLE visiteur ADD codea2f CHAR(4);
+
+ALTER TABLE comptable ADD email TEXT NULL;
+UPDATE comptable SET email = CONCAT(login,"@swiss-galaxy.com");
+ALTER TABLE comptable ADD codea2f CHAR(4);
