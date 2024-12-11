@@ -25,8 +25,10 @@
             foreach($visiteurs as $unVisiteur) {
                 $nomVisiteur = $unVisiteur['nom'];
                 $prenomVisiteur = $unVisiteur['prenom'];
+                $idVisiteur = $unVisiteur['id'];
         ?>
-            <option value="<?php echo $nomVisiteur; echo " " . $prenomVisiteur; ?>"><?php echo $nomVisiteur; echo " " . $prenomVisiteur; ?></option>
+            <option id="<?php echo $idVisiteur;?>" value="<?php echo $nomVisiteur; echo " " . $prenomVisiteur; ?>">
+                <?php echo $nomVisiteur; echo " " . $prenomVisiteur; ?></option>
         <?php
             }
         ?>
@@ -39,9 +41,7 @@
         <!-- Éléments ajoutés via fonction ajax -->
     </select> 
     
-    
-    
-    
+
     <h2>
         Valider la fiche de frais 
     </h2>
@@ -51,7 +51,7 @@
               action="index.php?uc=gererFrais&action=validerMajFraisForfait" 
               role="form">
             <fieldset>       
-                <div id="containerInputsValidationFrais" class="champsVerticaux">
+                <div id="container-inputs-validation-frais" class="champsVerticaux">
                     <label for="inputETP">Forfait Étape</label>
                     <input type="text" id="inputETP">
                     
@@ -67,10 +67,14 @@
                 </div>
                 
                 <button id="btn-corriger-frais-forfait" class="btn btn-success btn-corriger" type="button">Corriger</button>
-                <button class="btn btn-danger btn-reinitialiser" type="button">Réinitialiser</button>
+                <button class="btn btn-warning btn-reinitialiser" type="button">Réinitialiser</button>
             </fieldset>
         </form>
     </div> 
+</div>
+
+<div id="popup-confirmation">
+        Action réalisée !
 </div>
 
 

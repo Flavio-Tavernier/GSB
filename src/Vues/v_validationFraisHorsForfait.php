@@ -39,8 +39,8 @@
     <label for="inputNbJustificatifs">Nombre de justificatifs : </label>
     <input type="text" id="inputNbJustificatifs">
 
-    <button class="btn btn-success btn-valider" type="button">Valider</button>
-    <button class="btn btn-danger btn-reinitialiser" type="button">Réinitialiser</button>
+    <button id="btn-valider-fiche-frais" class="btn btn-success btn-valider" type="button">Valider</button>
+    <button class="btn btn-warning btn-reinitialiser" type="button">Réinitialiser</button>
 </div>
 
 
