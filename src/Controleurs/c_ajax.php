@@ -80,6 +80,22 @@ if (isset($_GET['fonction'])) {
 
             $pdo->majNbJustificatifs($idVisiteur, $mois, $nbJustificatifs);
             break;
+        case 'ajaxReporterFraisHorsForfait':
+            $idFraisHorsForfait = filter_input(INPUT_GET, 'idFraisHorsForfait', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $idVisiteur = filter_input(INPUT_GET, 'idVisiteur', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            $dernierMoisSaisi = $pdo->dernierMoisSaisi($idVisiteur);
+            var_dump($dernierMoisSaisi);
+            $dateActuelle = new DateTime();
+            $prochainMois = $dateActuelle->modify('+1 month')->format('Ym');
+
+            if ($prochainMois > $dernierMoisSaisi) {
+                
+            }
+
+            var_dump($prochainMois);
+
+            break;
         default :
             throw new Exception($fonction . " ---> Fonction Ajax Inconnue");
     }
