@@ -88,20 +88,40 @@ class PdoGsb
      * @param String $login Login du visiteur
      * @param String $mdp   Mot de passe du visiteur
      *
-     * @return l'id, le nom et le prénom sous la forme d'un tableau associatif
+     * @return l'id, le nom, le prénom, l'email sous la forme d'un tableau associatif
      */
-    public function getInfosUtilisateur($login, $mdp): array
+    public function getInfosVisiteur($login): array
     {
         $requetePrepare = $this->connexion->prepare(
-            'SELECT utilisateur.id AS id, utilisateur.nom AS nom, '
-            . 'utilisateur.prenom AS prenom '
-            . 'FROM utilisateur '
-            . 'WHERE utilisateur.login = :unLogin'
+            'SELECT visiteur.id AS id, visiteur.nom AS nom, '
+            . 'visiteur.prenom AS prenom, visiteur.email AS email '
+            . 'FROM visiteur '
+            . 'WHERE visiteur.login = :unLogin'
         );
         $requetePrepare->bindParam(':unLogin', $login, PDO::PARAM_STR);
         $requetePrepare->execute();
-        $utilisateur = $requetePrepare->fetch();
-        return $utilisateur ? $utilisateur : [];
+        return $requetePrepare->fetch();
+    }
+
+    /**
+     * Retourne les informations d'un comptable
+     *
+     * @param String $login Login du comptable
+     * @param String $mdp   Mot de passe du comptable
+     *
+     * @return l'id, le nom, le prénom, l'email sous la forme d'un tableau associatif
+     */
+    public function getInfosComptable($login): array
+    {
+        $requetePrepare = $this->connexion->prepare(
+            'SELECT comptable.id AS id, comptable.nom AS nom, '
+            . 'comptable.prenom AS prenom, comptable.email AS email '
+            . 'FROM comptable '
+            . 'WHERE comptable.login = :unLogin'
+        );
+        $requetePrepare->bindParam(':unLogin', $login, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        return $requetePrepare->fetch();
     }
     
     public function getMdpUtilisateur($login) {
@@ -115,20 +135,23 @@ class PdoGsb
         return $requetePrepare->fetch(PDO::FETCH_OBJ)->mdp;
     }
     
-    public function getRoleUtilisateur($id): int
+
+
+    public function estComptable($login): bool
     {
         $requetePrepare = $this->connexion->prepare(
-            'SELECT comptable.id AS id '
+            'SELECT comptable.login AS login '
             . 'FROM comptable '
-            . 'WHERE comptable.id = :unId'
+            . 'WHERE comptable.login = :unlogin'
         );
-        $requetePrepare->bindParam(':unId', $id, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unlogin', $login, PDO::PARAM_STR);
         $requetePrepare->execute();
-        if ($requetePrepare->fetch()['id'] == null){
-            return 0;
+
+        if ($requetePrepare->fetch() == null) {
+            return false;
         } else {
-            return 1;
-        } 
+            return true;
+        }
     }
     
     /**
@@ -660,6 +683,85 @@ class PdoGsb
         $requetePrepare->execute();
 
         return $requetePrepare->fetchColumn();
+    }
+
+
+    /**
+     * Ajoute le codeA2f en BDD 
+     * via l'id du visiteur et le code précédemment généré 
+     * passés en paramètre
+     * 
+     * @param int $id id du visiteur
+     * @param int $code code A2f du visiteur
+     *
+     */
+    public function setCodeA2fVisiteur($id, $code) {
+        $requetePrepare = $this->connexion->prepare(
+            'UPDATE visiteur '
+          . 'SET codea2f = :unCode '
+          . 'WHERE visiteur.id = :unIdVisiteur '
+        );
+        $requetePrepare->bindParam(':unCode', $code, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unIdVisiteur', $id, PDO::PARAM_STR);
+        $requetePrepare->execute();
+    }
+
+    /**
+     * Ajoute le codeA2f d'un comptable en BDD 
+     * via l'id du visiteur et le code précédemment généré 
+     * passés en paramètre
+     * 
+     * @param int $id id du visiteur
+     * @param int $code code A2f du visiteur
+     *
+     */
+    public function setCodeA2fComptable($id, $code) {
+        $requetePrepare = $this->connexion->prepare(
+            'UPDATE comptable '
+          . 'SET codea2f = :unCode '
+          . 'WHERE comptable.id = :unIdcomptable '
+        );
+        $requetePrepare->bindParam(':unCode', $code, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unIdcomptable', $id, PDO::PARAM_STR);
+        $requetePrepare->execute();
+    }
+
+
+
+    /**
+     * Récupére le code A2f d'un visiteur
+     * via l'id passé en paramètre
+     * 
+     * @param int $id du visiteur
+     *
+     */
+    public function getCodeVisiteur($id) {
+        $requetePrepare = $this->connexion->prepare(
+            'SELECT visiteur.codea2f AS codea2f '
+          . 'FROM visiteur '
+          . 'WHERE visiteur.id = :unId'
+        );
+        $requetePrepare->bindParam(':unId', $id, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        return $requetePrepare->fetch()['codea2f'];
+    }
+
+    /**
+     * Récupére le code A2f d'un comptable
+     * via l'id passé en paramètre
+     * 
+     * @param int $id du visiteur
+     *
+     */
+    public function getCodeComptable($id) {
+        $requetePrepare = $this->connexion->prepare(
+            'SELECT comptable.codea2f AS codea2f '
+          . 'FROM comptable '
+          . 'WHERE comptable.id = :unId'
+        );
+        $requetePrepare->bindParam(':unId', $id, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        return $requetePrepare->fetch()['codea2f'];
     }
     
     
