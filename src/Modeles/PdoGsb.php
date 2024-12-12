@@ -445,6 +445,7 @@ class PdoGsb
      */
     public function dernierMoisSaisi($idVisiteur): string
     {
+        var_dump($idVisiteur);
         $requetePrepare = $this->connexion->prepare(
             'SELECT MAX(mois) as dernierMois '
             . 'FROM fichefrais '

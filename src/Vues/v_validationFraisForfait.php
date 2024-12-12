@@ -73,9 +73,6 @@
     </div> 
 </div>
 
-<div id="popup-confirmation">
-        Action réalisée !
-</div>
 
 
 

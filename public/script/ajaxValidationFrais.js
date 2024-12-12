@@ -231,7 +231,8 @@ function injectValuesInputsFraisHorsForfait(valuesInputsFraisHorsForfait)
         "<td>" +
         "<button class='btn btn-success btn-corriger btn-corriger-frais-hors-forfait' type='button'>Corriger</button>" + 
         "<button class='btn btn-warning btn-reinitialiser' type='button'>Réinitialiser</button>" +
-        "<button class='btn btn-danger btn-refuser-frais-hors-forfait' type='button'>Refuser</button>"
+        "<button class='btn btn-danger btn-refuser-frais-hors-forfait' type='button'>Refuser</button>" +
+        "<button class='btn btn-info btn-reporter-frais-hors-forfait' type='button'>Reporter</button>" +
         "</td>" +
         "</tr>";
     } 
@@ -256,6 +257,13 @@ function injectValuesInputsFraisHorsForfait(valuesInputsFraisHorsForfait)
             ajaxRefuserFraisHorsForfait(element.target.parentNode.parentNode.id);
         });
     });
+
+    document.querySelectorAll('.btn-reporter-frais-hors-forfait').forEach(unBtnReinitialser => {
+        unBtnReinitialser.addEventListener('click', function(element) {
+            ajaxReporterFraisHorsForfait(element.target.parentNode.parentNode.id);
+        });
+    });
+
 }
 
 
@@ -431,3 +439,23 @@ function ajaxValiderFichefrais()
 }
 
 
+
+
+function ajaxReporterFraisHorsForfait(idFraisHorsForfait)
+{  
+    let idVisiteur = recupereIdvisiteur();
+
+
+    var xhr=new XMLHttpRequest();
+    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxReporterFraisHorsForfait&idVisiteur=" + idVisiteur + 
+        "&idFraisHorsForfait=" + idFraisHorsForfait);
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            console.log(xhr.response)
+        } else {
+            console.error('Error:', xhr.statusText);
+        }
+    };
+    xhr.send();
+}
