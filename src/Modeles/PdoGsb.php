@@ -366,7 +366,7 @@ class PdoGsb
      *
      * @return null
      */
-    public function majFraisHorsForfait($idFraisHorsForfait, $fraisHorsForfait): void
+    public function majFraisHorsForfait($idFraisHorsForfait, $lesFrais): void
     {
         $requetePrepare = $this->connexion->prepare(
             'UPDATE lignefraisHorsforfait '
@@ -375,9 +375,9 @@ class PdoGsb
             . 'lignefraisHorsforfait.montant = :montant '
             . 'WHERE lignefraisHorsforfait.id = :idFraisHorsForfait '
         );
-        $requetePrepare->bindParam(':libelle', $fraisHorsForfait['libelle'], PDO::PARAM_STR);
-        $requetePrepare->bindParam(':date', $fraisHorsForfait['date'], PDO::PARAM_STR);
-        $requetePrepare->bindParam(':montant', $fraisHorsForfait['montant'], PDO::PARAM_STR);
+        $requetePrepare->bindParam(':libelle', $lesFrais['libelle'], PDO::PARAM_STR);
+        $requetePrepare->bindParam(':date', $lesFrais['date'], PDO::PARAM_STR);
+        $requetePrepare->bindParam(':montant', $lesFrais['montant'], PDO::PARAM_STR);
         $requetePrepare->bindParam(':idFraisHorsForfait', $idFraisHorsForfait, PDO::PARAM_INT);
         
         $requetePrepare->execute();
@@ -445,7 +445,6 @@ class PdoGsb
      */
     public function dernierMoisSaisi($idVisiteur): string
     {
-        var_dump($idVisiteur);
         $requetePrepare = $this->connexion->prepare(
             'SELECT MAX(mois) as dernierMois '
             . 'FROM fichefrais '
@@ -514,16 +513,15 @@ class PdoGsb
      */
     public function creeNouveauFraisHorsForfait($idVisiteur, $mois, $libelle, $date, $montant): void
     {
-        $dateFr = Utilitaires::dateFrancaisVersAnglais($date);
         $requetePrepare = $this->connexion->prepare(
             'INSERT INTO lignefraishorsforfait '
-            . 'VALUES (null, :unIdVisiteur,:unMois, :unLibelle, :uneDateFr,'
+            . 'VALUES (null, :unIdVisiteur,:unMois, :unLibelle, :uneDate,'
             . ':unMontant) '
         );
         $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
         $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
         $requetePrepare->bindParam(':unLibelle', $libelle, PDO::PARAM_STR);
-        $requetePrepare->bindParam(':uneDateFr', $dateFr, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':uneDate', $date, PDO::PARAM_STR);
         $requetePrepare->bindParam(':unMontant', $montant, PDO::PARAM_INT);
         $requetePrepare->execute();
     }

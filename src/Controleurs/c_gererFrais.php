@@ -47,7 +47,8 @@ switch ($action) {
         if (Utilitaires::nbErreurs() != 0) {
             include PATH_VIEWS . 'v_erreurs.php';
         } else {
-            $pdo->creeNouveauFraisHorsForfait($idVisiteur, $mois, $libelle, $dateFrais, $montant);
+            $date = Utilitaires::dateFrancaisVersAnglais($dateFrais);
+            $pdo->creeNouveauFraisHorsForfait($idVisiteur, $mois, $libelle, $date, $montant);
         }
         break;
     case 'supprimerFrais':
