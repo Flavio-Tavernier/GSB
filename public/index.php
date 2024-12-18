@@ -65,8 +65,8 @@ switch ($uc) {
     case 'deconnexion':
         include PATH_CTRLS . 'c_deconnexion.php';
         break;
-    case 'testTcpdf':
-        include PATH_CTRLS . 'c_testTcpdf.php';
+    case 'generePdf':
+        include PATH_CTRLS . 'c_generePdf.php';
         break;
     default:
         Utilitaires::ajouterErreur('Page non trouvée, veuillez vérifier votre lien...');

@@ -16,8 +16,58 @@
  * @link      https://getbootstrap.com/docs/3.3/ Documentation Bootstrap v3
  */
 
-
+ use Outils\Utilitaires;
  require_once('../resources/Outils/tcpdf/tcpdf.php');
+
+
+ $leMois = filter_input(INPUT_GET, 'leMois', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+ $idVisiteur = $_SESSION['idUtilisateur'];
+
+ $lesFraisForfait = $pdo->getLesFraisForfait($idVisiteur, $leMois);
+ $nbNuitee = $lesFraisForfait[2]['2'];
+ $prixNuitee = $nbNuitee * 80;
+
+ $nbRepasMidi = $lesFraisForfait[3]['2'];
+ $prixRepasMidi = $nbRepasMidi * 25;
+
+ $nbKm = $lesFraisForfait[1]['2'];
+ $prixNbKm = $nbKm * 0.62;
+
+ $prixTotal = $prixNuitee + $prixRepasMidi + $prixNbKm;
+
+
+ $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur, $leMois);
+ $tabFraisHorsForfait = "";
+ foreach ($lesFraisHorsForfait as $unFraisHorsForfait){
+    $tabFraisHorsForfait .= "
+    <tr>
+        <td>
+            $unFraisHorsForfait[4]
+        </td>
+        <td>
+            $unFraisHorsForfait[3]
+        </td>
+        <td>
+            $unFraisHorsForfait[5]
+        </td>
+    </tr>
+    ";
+
+    $prixTotal += $unFraisHorsForfait[5];
+ }
+
+ $date = new DateTime();
+ $dateActuelle = $date->format('d M Y');
+
+ $lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($idVisiteur, $leMois);
+ $numAnnee = substr($leMois, 0, 4);
+ $numMois = substr($leMois, 4, 2);
+ $libEtat = $lesInfosFicheFrais['libEtat'];
+ $montantValide = $lesInfosFicheFrais['montantValide'];
+ $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
+ $dateModif = Utilitaires::dateAnglaisVersFrancais($lesInfosFicheFrais['dateModif']);
+
+
 
  $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
@@ -32,7 +82,7 @@ $pdf->SetKeywords('fiche, frais');
 // $pdf->SetHeaderData('gsb.jpg', PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 048', PDF_HEADER_STRING);
 $pdf->setJPEGQuality(75);
 $pdf->SetXY(110, 200);
-$pdf->Image('gsb.jpg', '', '', 40, 40, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
+$pdf->Image('../../resources/images/gsb.jpg', '', '', 40, 40, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
 
 // set auto page breaks
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -67,9 +117,9 @@ $tbl = <<<EOD
     </tr>
     <tr>
         <td>
-            Visiteur
+            Visiteur : $idVisiteur
             <br>
-            Mois
+            Mois : $numMois/$numAnnee
             <br>
             <table cellspacing="0" cellpadding="1" border="1">
                 <tr>
@@ -93,13 +143,13 @@ $tbl = <<<EOD
                     </td>
 
                     <td>
-                        x
+                        $nbNuitee
                     </td>
                     <td>
-                        x
+                        80.00
                     </td>
                     <td>
-                        x
+                        $prixNuitee
                     </td>
                 </tr>
 
@@ -109,13 +159,13 @@ $tbl = <<<EOD
                     </td>
 
                     <td>
-                        x
+                        $nbRepasMidi
                     </td>
                     <td>
-                        x
+                        25.00
                     </td>
                     <td>
-                        x
+                        $prixRepasMidi
                     </td>
                 </tr>
 
@@ -125,13 +175,13 @@ $tbl = <<<EOD
                     </td>
 
                     <td>
-                        x
+                        $nbKm
                     </td>
                     <td>
-                        x
+                        0.62
                     </td>
                     <td>
-                        x
+                        $prixNbKm
                     </td>
                 </tr>
 
@@ -152,13 +202,14 @@ $tbl = <<<EOD
                         Montant
                     </td>
                 </tr>
+                $tabFraisHorsForfait  
 
                 <tr>
                     <td>
-                        Total 
+                        Total $numMois/$numAnnee
                     </td>
                     <td>
-                        x€
+                        $prixTotal €
                     </td>
                 </tr>
             </table>
@@ -169,7 +220,7 @@ EOD;
 
 $pdf->writeHTML($tbl, true, false, false, false, '');
 
-$pdf->Write(0, 'Fait à x, le x x xxxx', '', 0, 'L', true, 0, false, false, 0);
+$pdf->Write(0, 'Fait à Paris, le ' . $dateActuelle, '', 0, 'L', true, 0, false, false, 0);
 $pdf->Write(0, 'Vu l\'agent comptable', '', 0, 'L', true, 0, false, false, 0);
 
 
