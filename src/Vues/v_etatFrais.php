@@ -15,8 +15,10 @@
  * @link      http://www.reseaucerta.org Contexte « Laboratoire GSB »
  * @link      https://getbootstrap.com/docs/3.3/ Documentation Bootstrap v3
  */
-
 ?>
+<div id="container-lien-print">
+    <a href="">Télécharger la fiche</a>
+</div>
 <hr>
 <div class="panel panel-primary">
     <div class="panel-heading">Fiche de frais du mois 
