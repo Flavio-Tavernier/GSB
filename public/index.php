@@ -68,6 +68,9 @@ switch ($uc) {
     case 'generePdf':
         include PATH_CTRLS . 'c_generePdf.php';
         break;
+    case 'afficherPdf':
+        include PATH_VIEWS . 'v_afficherPdf.php';
+        break;
     default:
         Utilitaires::ajouterErreur('Page non trouvée, veuillez vérifier votre lien...');
         include PATH_VIEWS . 'v_erreurs.php';

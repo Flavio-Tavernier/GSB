@@ -39,25 +39,26 @@
  $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur, $leMois);
  $tabFraisHorsForfait = "";
  foreach ($lesFraisHorsForfait as $unFraisHorsForfait){
-    $tabFraisHorsForfait .= "
+    $tabFraisHorsForfait .= '
     <tr>
-        <td>
-            $unFraisHorsForfait[4]
+        <td colspan="1">
+            '.$unFraisHorsForfait[4].'
         </td>
-        <td>
-            $unFraisHorsForfait[3]
+        <td colspan="2">
+            '.$unFraisHorsForfait[3].'
         </td>
-        <td>
-            $unFraisHorsForfait[5]
+        <td colspan="1">
+            '.$unFraisHorsForfait[5].'
         </td>
     </tr>
-    ";
+    ';
 
     $prixTotal += $unFraisHorsForfait[5];
  }
 
+
  $date = new DateTime();
- $dateActuelle = $date->format('d M Y');
+ $dateActuelle = $date->format('d-m-Y');
 
  $lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($idVisiteur, $leMois);
  $numAnnee = substr($leMois, 0, 4);
@@ -69,34 +70,16 @@
 
 
 
+
  $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('GSB');
-$pdf->SetTitle('fiche_frais_xx');
+$pdf->SetTitle('fiche_frais_' . $idVisiteur . "_" . $leMois);
 $pdf->SetSubject('Fiche de frais');
 $pdf->SetKeywords('fiche, frais');
 
-// set default header data
-// $pdf->SetHeaderData('gsb.jpg', PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 048', PDF_HEADER_STRING);
-$pdf->setJPEGQuality(75);
-$pdf->SetXY(110, 200);
-$pdf->Image('../../resources/images/gsb.jpg', '', '', 40, 40, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
-
-// set auto page breaks
-$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-// set image scale factor
-$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-// set some language-dependent strings (optional)
-if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
-    require_once(dirname(__FILE__).'/lang/eng.php');
-    $pdf->setLanguageArray($l);
-}
-
-// ---------------------------------------------------------
 
 // set font
 $pdf->SetFont('helvetica', 'B', 20);
@@ -104,44 +87,61 @@ $pdf->SetFont('helvetica', 'B', 20);
 // add a page
 $pdf->AddPage();
 
+$pdf->Image('..\resources\images\gsb.jpg', 0, 0, 40, 40, '', '', 'T', false, 300, 'C', false, false, 0, false, false, false);
+
+
 $pdf->SetFont('helvetica', '', 8);
 
 // -----------------------------------------------------------------------------
+$pdf->SetXY(15, 50);
+$tbl = <<<EOF
+<style>
+    .texte-bleu {
+        color: blue;
+    }
 
-$tbl = <<<EOD
-<table cellspacing="0" cellpadding="1" border="1">
+    .sans-bordure {
+        border-width: 0;
+    }
+</style>
+
+<table cellspacing="0" cellpadding="10" border="1">
     <tr>
-        <td>
+        <td align="center" class="texte-bleu">
             REMBOURSEMENT DE FRAIS ENGAGES
         </td>
     </tr>
     <tr>
-        <td>
+        <td align="center">
             Visiteur : $idVisiteur
             <br>
             Mois : $numMois/$numAnnee
             <br>
+
+            
             <table cellspacing="0" cellpadding="1" border="1">
                 <tr>
-                    <td>
+                    <td align="center" class="texte-bleu sans-bordure">
                         Frais Forfaitaires
-                    </td>
-                    <td>
+                    </td>   
+                    <td align="center" class="texte-bleu sans-bordure">
                         Quantité
                     </td>
-                    <td>
+                    <td align="center" class="texte-bleu sans-bordure">
                         Montant unitaire
                     </td>
-                    <td>
+                    <td align="center" class="texte-bleu sans-bordure">
                         Total
                     </td>
                 </tr>
 
-                <tr>
+                
+                <table border="1">
+                    <tr>
                     <td>
                         Nuitée
                     </td>
-
+ 
                     <td>
                         $nbNuitee
                     </td>
@@ -152,6 +152,9 @@ $tbl = <<<EOD
                         $prixNuitee
                     </td>
                 </tr>
+                </table>
+
+                
 
                 <tr>
                     <td>
@@ -185,30 +188,45 @@ $tbl = <<<EOD
                     </td>
                 </tr>
 
+
                 <tr>
-                    <td >
+                    <td colspan="4" align="center" height="50" class="sans-bordure">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" align="center"class="texte-bleu sans-bordure">
                         Autres Frais
                     </td>
                 </tr>
 
                 <tr>
-                    <td>
+                    <td colspan="1" class="texte-bleu sans-bordure">
                         Date
                     </td>
-                    <td>
+                    <td colspan="2" class="texte-bleu sans-bordure">
                         Libellé
                     </td>
-                    <td>
+                    <td colspan="1" class="texte-bleu sans-bordure">
                         Montant
                     </td>
                 </tr>
                 $tabFraisHorsForfait  
 
+                
                 <tr>
-                    <td>
+                    <td colspan="4" align="center" height="10" class="sans-bordure">
+                        
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td colspan="2" class="sans-bordure">
+
+                    </td>
+                    <td colspan="1">
                         Total $numMois/$numAnnee
                     </td>
-                    <td>
+                    <td colspan="1">
                         $prixTotal €
                     </td>
                 </tr>
@@ -216,17 +234,24 @@ $tbl = <<<EOD
         </td>
     </tr>
 </table>
-EOD;
+EOF;
 
 $pdf->writeHTML($tbl, true, false, false, false, '');
 
-$pdf->Write(0, 'Fait à Paris, le ' . $dateActuelle, '', 0, 'L', true, 0, false, false, 0);
-$pdf->Write(0, 'Vu l\'agent comptable', '', 0, 'L', true, 0, false, false, 0);
+$pdf->SetXY(0, 210);
+$pdf->Write(0, 'Fait à Paris, le ' . $dateActuelle, '', 0, 'R', true, 0, false, false, 0);
 
+$pdf->SetXY(0, 215);
+$pdf->Write(0, 'Vu l\'agent comptable', '', 0, 'R', true, 0, false, false, 0);
 
+$pdf->Image('..\resources\images\signatureComptable.png', 0, 230, 40, 40, '', '', 'B', false, 300, 'R', false, false, 0, false, false, false);
 // -----------------------------------------------------------------------------
 ob_end_clean();
 //Close and output PDF document
-$pdf->Output('example_048.pdf', 'I');
+$pdfData = $pdf->Output('fiche_frais_' . $idVisiteur . "_" . $leMois . '.pdf', 'S');
+
+$pdo->insertPdf($idVisiteur, $leMois, $pdfData);
+
+
 
 ?>

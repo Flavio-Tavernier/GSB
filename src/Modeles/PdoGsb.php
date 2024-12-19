@@ -762,6 +762,45 @@ class PdoGsb
         $requetePrepare->execute();
         return $requetePrepare->fetch()['codea2f'];
     }
+
+
+
+    /**
+     * Insert le PDF d'un fiche de fras
+     * 
+     * @param int $idVisiteur du visiteur
+     * @param int $leMois de fiche de frais
+     * @param int $pdfData le PDF en binaire
+     *
+     */
+    public function insertPdf($idVisiteur, $leMois, $pdfData)
+    {
+        $requetePrepare = $this->connexion->prepare(
+            'UPDATE fichefrais '
+            . 'SET pdf = :pdfData '
+            . 'WHERE idvisiteur = :idVisiteur '
+            . 'AND mois = :leMois'
+        );
+        $requetePrepare->bindParam(':pdfData', $pdfData, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':idVisiteur', $idVisiteur, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':leMois', $leMois, PDO::PARAM_STR);
+        $requetePrepare->execute();
+    }
+
+
+    public function getPdf($idVisiteur, $leMois)
+    {
+        $requetePrepare = $this->connexion->prepare(
+            'SELECT pdf '
+          . 'FROM fichefrais '
+          . 'WHERE idvisiteur = :idVisiteur '
+          . 'AND mois = :leMois'
+        );
+        $requetePrepare->bindParam(':idVisiteur', $idVisiteur, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':leMois', $leMois, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        return $requetePrepare->fetchColumn(); 
+    }
     
     
 }
