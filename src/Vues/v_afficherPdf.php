@@ -25,8 +25,6 @@
 
  $pdfDeLaBae = $pdo->getPdf($idVisiteur, $leMois);
 
-//  file_put_contents('recovered_document.pdf', $pdfDeLaBae);
-
  header('Content-Type: application/pdf');
-echo $pdfDeLaBae;
+ echo $pdfDeLaBae;
 ?>

@@ -788,6 +788,15 @@ class PdoGsb
     }
 
 
+    /**
+     * Recupere PDF d'une fiche de fais de la BDD
+     * 
+     * 
+     * @param int $idVisiteur du visiteur
+     * @param int $leMois de fiche de frais
+     *
+     * @return String
+     */
     public function getPdf($idVisiteur, $leMois)
     {
         $requetePrepare = $this->connexion->prepare(
