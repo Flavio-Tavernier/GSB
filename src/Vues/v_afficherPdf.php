@@ -23,8 +23,12 @@
  $idVisiteur = $_SESSION['idUtilisateur'];
 
 
- $pdfDeLaBae = $pdo->getPdf($idVisiteur, $leMois);
+ $pdfDeLaBase = $pdo->getPdf($idVisiteur, $leMois);
+
+ $nomPdf = $pdfDeLaBase['nompdf'] . ".pdf";
+ $donneesPdf = $pdfDeLaBase['donneespdf'];
 
  header('Content-Type: application/pdf');
- echo $pdfDeLaBae;
+ header('Content-Disposition: filename="' . $nomPdf . '"');
+ echo $donneesPdf;
 ?>
