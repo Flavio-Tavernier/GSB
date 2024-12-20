@@ -25,10 +25,8 @@
 
  $pdfDeLaBase = $pdo->getPdf($idVisiteur, $leMois);
 
- $nomPdf = $pdfDeLaBase['nompdf'] . ".pdf";
- $donneesPdf = $pdfDeLaBase['donneespdf'];
 
  header('Content-Type: application/pdf');
- header('Content-Disposition: filename="' . $nomPdf . '"');
- echo $donneesPdf;
+ header('Content-Disposition: filename="' . $pdfDeLaBase['nompdf'] . ".pdf" . '"');
+ echo $pdfDeLaBase['donneespdf'];
 ?>

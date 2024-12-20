@@ -21,9 +21,10 @@
  $leMois = filter_input(INPUT_GET, 'leMois', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
  $idVisiteur = $_SESSION['idUtilisateur'];
 
- $pdfEnBase = $pdo->getPdf($idVisiteur, $leMois);
 
- if ($pdfEnBase) {
+ $pdfDeLaBase = $pdo->getPdf($idVisiteur, $leMois);
+
+ if ($pdfDeLaBase['donneespdf']) {
     include (PATH_VIEWS . 'v_afficherPdf.php');
  } else {
     $lesFraisForfait = $pdo->getLesFraisForfait($idVisiteur, $leMois);
