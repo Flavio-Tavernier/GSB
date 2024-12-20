@@ -366,7 +366,7 @@ class PdoGsb
      *
      * @return null
      */
-    public function majFraisHorsForfait($idFraisHorsForfait, $fraisHorsForfait): void
+    public function majFraisHorsForfait($idFraisHorsForfait, $lesFrais): void
     {
         $requetePrepare = $this->connexion->prepare(
             'UPDATE lignefraisHorsforfait '
@@ -375,9 +375,9 @@ class PdoGsb
             . 'lignefraisHorsforfait.montant = :montant '
             . 'WHERE lignefraisHorsforfait.id = :idFraisHorsForfait '
         );
-        $requetePrepare->bindParam(':libelle', $fraisHorsForfait['libelle'], PDO::PARAM_STR);
-        $requetePrepare->bindParam(':date', $fraisHorsForfait['date'], PDO::PARAM_STR);
-        $requetePrepare->bindParam(':montant', $fraisHorsForfait['montant'], PDO::PARAM_STR);
+        $requetePrepare->bindParam(':libelle', $lesFrais['libelle'], PDO::PARAM_STR);
+        $requetePrepare->bindParam(':date', $lesFrais['date'], PDO::PARAM_STR);
+        $requetePrepare->bindParam(':montant', $lesFrais['montant'], PDO::PARAM_STR);
         $requetePrepare->bindParam(':idFraisHorsForfait', $idFraisHorsForfait, PDO::PARAM_INT);
         
         $requetePrepare->execute();
@@ -445,7 +445,6 @@ class PdoGsb
      */
     public function dernierMoisSaisi($idVisiteur): string
     {
-        var_dump($idVisiteur);
         $requetePrepare = $this->connexion->prepare(
             'SELECT MAX(mois) as dernierMois '
             . 'FROM fichefrais '
@@ -514,16 +513,15 @@ class PdoGsb
      */
     public function creeNouveauFraisHorsForfait($idVisiteur, $mois, $libelle, $date, $montant): void
     {
-        $dateFr = Utilitaires::dateFrancaisVersAnglais($date);
         $requetePrepare = $this->connexion->prepare(
             'INSERT INTO lignefraishorsforfait '
-            . 'VALUES (null, :unIdVisiteur,:unMois, :unLibelle, :uneDateFr,'
+            . 'VALUES (null, :unIdVisiteur,:unMois, :unLibelle, :uneDate,'
             . ':unMontant) '
         );
         $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
         $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
         $requetePrepare->bindParam(':unLibelle', $libelle, PDO::PARAM_STR);
-        $requetePrepare->bindParam(':uneDateFr', $dateFr, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':uneDate', $date, PDO::PARAM_STR);
         $requetePrepare->bindParam(':unMontant', $montant, PDO::PARAM_INT);
         $requetePrepare->execute();
     }
@@ -556,7 +554,7 @@ class PdoGsb
     {
         $requetePrepare = $this->connexion->prepare(
             'UPDATE lignefraishorsforfait '
-            . 'SET libelle = CONCAT("REFUSE : ", libelle) '
+            . 'SET libelle = SUBSTRING(CONCAT("REFUSE : ", libelle), 1, 100) '
             . 'WHERE lignefraishorsforfait.id = :unIdFrais'
         );
         $requetePrepare->bindParam(':unIdFrais', $idFraisHorsForfait, PDO::PARAM_STR);
@@ -763,6 +761,54 @@ class PdoGsb
         $requetePrepare->bindParam(':unId', $id, PDO::PARAM_STR);
         $requetePrepare->execute();
         return $requetePrepare->fetch()['codea2f'];
+    }
+
+
+
+    /**
+     * Insert le PDF d'un fiche de fras
+     * 
+     * @param int $idVisiteur du visiteur
+     * @param int $leMois de fiche de frais
+     * @param int $pdfData le PDF en binaire
+     *
+     */
+    public function insertPdf($idVisiteur, $leMois, $pdfData)
+    {
+        $requetePrepare = $this->connexion->prepare(
+            'UPDATE fichefrais '
+            . 'SET pdf = :pdfData '
+            . 'WHERE idvisiteur = :idVisiteur '
+            . 'AND mois = :leMois'
+        );
+        $requetePrepare->bindParam(':pdfData', $pdfData, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':idVisiteur', $idVisiteur, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':leMois', $leMois, PDO::PARAM_STR);
+        $requetePrepare->execute();
+    }
+
+
+    /**
+     * Recupere PDF d'une fiche de fais de la BDD
+     * 
+     * 
+     * @param int $idVisiteur du visiteur
+     * @param int $leMois de fiche de frais
+     *
+     * @return String
+     */
+    public function getPdf($idVisiteur, $leMois)
+    {
+        $requetePrepare = $this->connexion->prepare(
+            'SELECT pdf '
+          . 'FROM fichefrais '
+          . 'WHERE idvisiteur = :idVisiteur '
+          . 'AND mois = :leMois'
+        );
+        $requetePrepare->bindParam(':idVisiteur', $idVisiteur, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':leMois', $leMois, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        return $requetePrepare->fetchColumn(); 
     }
     
     

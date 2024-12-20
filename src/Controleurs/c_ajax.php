@@ -84,17 +84,23 @@ if (isset($_GET['fonction'])) {
             $idFraisHorsForfait = filter_input(INPUT_GET, 'idFraisHorsForfait', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $idVisiteur = filter_input(INPUT_GET, 'idVisiteur', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
+            $fraisHorsForfait = json_decode($_GET['lesFraisHorsForfait'], true);
+            $libelle = $fraisHorsForfait['libelle'];
+            $date = $fraisHorsForfait['date'];
+            $montant = $fraisHorsForfait['montant'];
+
             $dernierMoisSaisi = $pdo->dernierMoisSaisi($idVisiteur);
-            var_dump($dernierMoisSaisi);
+
             $dateActuelle = new DateTime();
             $prochainMois = $dateActuelle->modify('+1 month')->format('Ym');
 
             if ($prochainMois > $dernierMoisSaisi) {
-                
-            }
+                $pdo->creeNouvellesLignesFrais($idVisiteur, $prochainMois);
+            } 
 
-            var_dump($prochainMois);
-
+            $pdo->creeNouveauFraisHorsForfait($idVisiteur, $prochainMois, $libelle, $date, $montant);
+            $pdo->supprimerFraisHorsForfait($idFraisHorsForfait);
+        
             break;
         default :
             throw new Exception($fonction . " ---> Fonction Ajax Inconnue");
