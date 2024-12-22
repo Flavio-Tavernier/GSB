@@ -418,7 +418,7 @@ function ajaxRefuserFraisHorsForfait(idFraisHorsForfait)
 
 
 /**
- * Fonction ajax qui récupère l'id d'un frais hors forfait d'un visiteur 
+ * Fonction ajax qui récupère l'id d'un visiteur 
  * et le mois de fiche de frais pour la valider
  *
  * 
@@ -445,6 +445,12 @@ function ajaxValiderFichefrais()
 
 
 
+/**
+ * Fonction ajax qui récupère l'id d'un frais hors forfait en paramètre 
+ * afin de le reporte au mois suivant
+ *
+ *  * @param int idFraisHorsForfait Id d'un frais hors forfait
+ */
 function ajaxReporterFraisHorsForfait(idFraisHorsForfait)
 {  
     let idVisiteur = recupereIdvisiteur();
@@ -476,6 +482,12 @@ function ajaxReporterFraisHorsForfait(idFraisHorsForfait)
 }
 
 
+
+/**
+ * Fonction ajax qui afficher une popup de confirmation
+ * de modification de fiche de frais
+ *
+ */
 function afficherPopup()
 {
     document.getElementById('container-popup').style.display="flex"
