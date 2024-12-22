@@ -21,7 +21,5 @@ require PATH_VIEWS . 'v_validationFraisForfait.php';
 require PATH_VIEWS . 'v_validationFraisHorsForfait.php';
 
 
-
-
 ?>
 

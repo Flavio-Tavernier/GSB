@@ -313,6 +313,7 @@ function ajaxMajNbJustificaifs()
     xhr.onload = function() {
         if (xhr.status === 200) {
             // console.log(xhr.response);
+            afficherPopup()
         } else {
             console.error('Error:', xhr.statusText);
         }
@@ -350,7 +351,7 @@ function ajaxMajFraisForfait() {
     xhr.onload = function() {
         if (xhr.status === 200) {
             // console.log(xhr.response);
-            
+            afficherPopup();
         } else {
             console.error('Error:', xhr.statusText);
         }
@@ -382,6 +383,7 @@ function ajaxMajFraisHorsForfait(idFraisHorsForfait) {
     xhr.onload = function() {
         if (xhr.status === 200) {
             // console.log(xhr.response);
+            afficherPopup()
         } else {
             console.error('Error:', xhr.statusText);
         }
@@ -405,6 +407,7 @@ function ajaxRefuserFraisHorsForfait(idFraisHorsForfait)
     xhr.onload = function() {
         if (xhr.status === 200) {
             document.getElementById(idFraisHorsForfait).remove();
+            afficherPopup()
         } else {
             console.error('Error:', xhr.statusText);
         }
@@ -431,6 +434,7 @@ function ajaxValiderFichefrais()
     xhr.onload = function() {
         if (xhr.status === 200) {
             // console.log(xhr.response);
+            afficherPopup()
         } else {
             console.error('Error:', xhr.statusText);
         }
@@ -463,9 +467,20 @@ function ajaxReporterFraisHorsForfait(idFraisHorsForfait)
         if (xhr.status === 200) {
             // console.log(xhr.response)
             ajaxGetFraisHorsForfait();
+            afficherPopup()
         } else {
             console.error('Error:', xhr.statusText);
         }
     };
     xhr.send();
+}
+
+
+function afficherPopup()
+{
+    document.getElementById('container-popup').style.display="flex"
+
+    setTimeout(() => {
+        document.getElementById('container-popup').style.display="none"
+    }, "2000");
 }
