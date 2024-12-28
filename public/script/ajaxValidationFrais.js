@@ -445,14 +445,25 @@ function ajaxReporterFraisHorsForfait(idFraisHorsForfait)
 {  
     let idVisiteur = recupereIdvisiteur();
 
+    let ligneFraisHorsForfait = window.document.getElementById(idFraisHorsForfait).children;
+    let objetFraisHorsForfait = {"date" : "", "libelle" : "", "montant" : ""};
+
+    let i = 0;
+    for (let [key] of Object.entries(objetFraisHorsForfait)) {
+        objetFraisHorsForfait[key] = ligneFraisHorsForfait[i].children.item(0).value;
+        i++;
+    }
 
     var xhr=new XMLHttpRequest();
+
     xhr.open("POST","/index.php?uc=ajax&fonction=ajaxReporterFraisHorsForfait&idVisiteur=" + idVisiteur + 
-        "&idFraisHorsForfait=" + idFraisHorsForfait);
+        "&idFraisHorsForfait=" + idFraisHorsForfait +
+        "&lesFraisHorsForfait=" + JSON.stringify(objetFraisHorsForfait));
 
     xhr.onload = function() {
         if (xhr.status === 200) {
-            console.log(xhr.response)
+            // console.log(xhr.response)
+            ajaxGetFraisHorsForfait();
         } else {
             console.error('Error:', xhr.statusText);
         }
