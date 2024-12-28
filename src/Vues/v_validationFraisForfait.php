@@ -16,7 +16,10 @@
 ?>
 <link href="/styles/validationFrais.css" rel="stylesheet">
 
-<div class="row" id="container">     
+
+
+
+<div class="row" id="container-validation-frais-hors-forfaits">     
     <label for="lstVisiteur">Choisir le visiteur :</label> 
     <select name="lstVisiteur" id="lstVisiteur">
         <?php 

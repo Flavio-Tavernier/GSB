@@ -21,9 +21,10 @@
  $leMois = filter_input(INPUT_GET, 'leMois', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
  $idVisiteur = $_SESSION['idUtilisateur'];
 
- $pdfEnBase = $pdo->getPdf($idVisiteur, $leMois);
 
- if ($pdfEnBase) {
+ $pdfDeLaBase = $pdo->getPdf($idVisiteur, $leMois);
+
+ if ($pdfDeLaBase['donneespdf']) {
     include (PATH_VIEWS . 'v_afficherPdf.php');
  } else {
     $lesFraisForfait = $pdo->getLesFraisForfait($idVisiteur, $leMois);
@@ -71,7 +72,7 @@
     $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
     $dateModif = Utilitaires::dateAnglaisVersFrancais($lesInfosFicheFrais['dateModif']);
    
-   
+   $nomPdf = 'fiche_frais_' . $idVisiteur . "_" . $leMois;
    
    
     $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -79,7 +80,7 @@
    // set document information
    $pdf->SetCreator(PDF_CREATOR);
    $pdf->SetAuthor('GSB');
-   $pdf->SetTitle('fiche_frais_' . $idVisiteur . "_" . $leMois);
+   $pdf->SetTitle($nomPdf);
    $pdf->SetSubject('Fiche de frais');
    $pdf->SetKeywords('fiche, frais');
    
@@ -251,9 +252,9 @@
    // -----------------------------------------------------------------------------
    ob_end_clean();
    //Close and output PDF document
-   $pdfData = $pdf->Output('fiche_frais_' . $idVisiteur . "_" . $leMois . '.pdf', 'S');
+   $pdfData = $pdf->Output($nomPdf . '.pdf', 'S');
    
-   $pdo->insertPdf($idVisiteur, $leMois, $pdfData);
+   $pdo->insertPdf($idVisiteur, $leMois, $pdfData, $nomPdf);
 
    include (PATH_VIEWS . 'v_afficherPdf.php');
  }

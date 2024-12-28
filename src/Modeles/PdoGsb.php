@@ -882,15 +882,17 @@ class PdoGsb
      * @param int $pdfData le PDF en binaire
      *
      */
-    public function insertPdf($idVisiteur, $leMois, $pdfData)
+    public function insertPdf($idVisiteur, $leMois, $pdfData, $nomPdf)
     {
         $requetePrepare = $this->connexion->prepare(
             'UPDATE fichefrais '
-            . 'SET pdf = :pdfData '
+            . 'SET donneespdf = :pdfData, '
+            . 'nompdf = :nomPdf '
             . 'WHERE idvisiteur = :idVisiteur '
             . 'AND mois = :leMois'
         );
         $requetePrepare->bindParam(':pdfData', $pdfData, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':nomPdf', $nomPdf, PDO::PARAM_STR);
         $requetePrepare->bindParam(':idVisiteur', $idVisiteur, PDO::PARAM_STR);
         $requetePrepare->bindParam(':leMois', $leMois, PDO::PARAM_STR);
         $requetePrepare->execute();
@@ -909,7 +911,7 @@ class PdoGsb
     public function getPdf($idVisiteur, $leMois)
     {
         $requetePrepare = $this->connexion->prepare(
-            'SELECT pdf '
+            'SELECT donneespdf, nompdf '
           . 'FROM fichefrais '
           . 'WHERE idvisiteur = :idVisiteur '
           . 'AND mois = :leMois'
@@ -917,7 +919,7 @@ class PdoGsb
         $requetePrepare->bindParam(':idVisiteur', $idVisiteur, PDO::PARAM_STR);
         $requetePrepare->bindParam(':leMois', $leMois, PDO::PARAM_STR);
         $requetePrepare->execute();
-        return $requetePrepare->fetchColumn(); 
+        return $requetePrepare->fetch(); 
     }
     
     
