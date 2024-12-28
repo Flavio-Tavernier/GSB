@@ -61,6 +61,8 @@ CREATE TABLE IF NOT EXISTS fichefrais (
   montantvalide decimal(10,2) DEFAULT NULL,
   datemodif date DEFAULT NULL,
   idetat char(2) DEFAULT 'CR',
+  donneespdf longblob DEFAULT NULL,
+  nompdf varchar(255) DEFAULT NULL,
   PRIMARY KEY (idvisiteur,mois),
   FOREIGN KEY (idetat) REFERENCES etat(id),
   FOREIGN KEY (idvisiteur) REFERENCES visiteur(id)

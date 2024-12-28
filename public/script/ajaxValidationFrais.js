@@ -313,6 +313,7 @@ function ajaxMajNbJustificaifs()
     xhr.onload = function() {
         if (xhr.status === 200) {
             // console.log(xhr.response);
+            afficherPopup()
         } else {
             console.error('Error:', xhr.statusText);
         }
@@ -350,7 +351,7 @@ function ajaxMajFraisForfait() {
     xhr.onload = function() {
         if (xhr.status === 200) {
             // console.log(xhr.response);
-            
+            afficherPopup();
         } else {
             console.error('Error:', xhr.statusText);
         }
@@ -382,6 +383,7 @@ function ajaxMajFraisHorsForfait(idFraisHorsForfait) {
     xhr.onload = function() {
         if (xhr.status === 200) {
             // console.log(xhr.response);
+            afficherPopup()
         } else {
             console.error('Error:', xhr.statusText);
         }
@@ -405,6 +407,7 @@ function ajaxRefuserFraisHorsForfait(idFraisHorsForfait)
     xhr.onload = function() {
         if (xhr.status === 200) {
             document.getElementById(idFraisHorsForfait).remove();
+            afficherPopup()
         } else {
             console.error('Error:', xhr.statusText);
         }
@@ -415,7 +418,7 @@ function ajaxRefuserFraisHorsForfait(idFraisHorsForfait)
 
 
 /**
- * Fonction ajax qui récupère l'id d'un frais hors forfait d'un visiteur 
+ * Fonction ajax qui récupère l'id d'un visiteur 
  * et le mois de fiche de frais pour la valider
  *
  * 
@@ -431,6 +434,7 @@ function ajaxValiderFichefrais()
     xhr.onload = function() {
         if (xhr.status === 200) {
             // console.log(xhr.response);
+            afficherPopup()
         } else {
             console.error('Error:', xhr.statusText);
         }
@@ -441,6 +445,12 @@ function ajaxValiderFichefrais()
 
 
 
+/**
+ * Fonction ajax qui récupère l'id d'un frais hors forfait en paramètre 
+ * afin de le reporte au mois suivant
+ *
+ *  * @param int idFraisHorsForfait Id d'un frais hors forfait
+ */
 function ajaxReporterFraisHorsForfait(idFraisHorsForfait)
 {  
     let idVisiteur = recupereIdvisiteur();
@@ -463,9 +473,26 @@ function ajaxReporterFraisHorsForfait(idFraisHorsForfait)
         if (xhr.status === 200) {
             // console.log(xhr.response)
             ajaxGetFraisHorsForfait();
+            afficherPopup()
         } else {
             console.error('Error:', xhr.statusText);
         }
     };
     xhr.send();
+}
+
+
+
+/**
+ * Fonction ajax qui afficher une popup de confirmation
+ * de modification de fiche de frais
+ *
+ */
+function afficherPopup()
+{
+    document.getElementById('container-popup').style.display="flex"
+
+    setTimeout(() => {
+        document.getElementById('container-popup').style.display="none"
+    }, "2000");
 }

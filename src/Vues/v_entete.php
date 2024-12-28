@@ -30,6 +30,12 @@
     </head>
     <body>
         <div class="container">
+            <div id="container-popup">
+                <div id="container-popup-texte">
+                    Modification effectuée 
+                </div>
+            </div>
+
             <?php
             $uc = filter_input(INPUT_GET, 'uc', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             if ($estConnecte) {
