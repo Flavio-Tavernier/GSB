@@ -27,15 +27,20 @@ switch ($action) {
         if ($pdo->estPremierFraisMois($idVisiteur, $mois)) {
             $pdo->creeNouvellesLignesFrais($idVisiteur, $mois);
         }
+        $typeVehiculeUtilisateur = $pdo->getTypeVehiculeUtilisateur($idVisiteur);
         break;
     case 'validerMajFraisForfait':
         $lesFrais = filter_input(INPUT_POST, 'lesFrais', FILTER_DEFAULT, FILTER_FORCE_ARRAY);
-        if (Utilitaires::lesQteFraisValides($lesFrais)) {
+        $typeVehicule = filter_input(INPUT_POST, 'typeVehicule', FILTER_SANITIZE_NUMBER_INT);
+
+        if (Utilitaires::lesQteFraisValides($lesFrais) && !empty($typeVehicule)) {
+            $pdo->changerTypeVehicule($idVisiteur, $typeVehicule);
             $pdo->majFraisForfait($idVisiteur, $mois, $lesFrais);
         } else {
-            Utilitaires::ajouterErreur('Les valeurs des frais doivent être numériques');
+            Utilitaires::ajouterErreur('Les valeurs des frais doivent être numériques et un type de véhicule doit être sélectionné');
             include PATH_VIEWS . 'v_erreurs.php';
         }
+        $typeVehiculeUtilisateur = $pdo->getTypeVehiculeUtilisateur($idVisiteur);
         break;
     case 'validerCreationFrais':
         $dateFrais = Utilitaires::dateAnglaisVersFrancais(

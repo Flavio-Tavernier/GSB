@@ -1,0 +1,42 @@
+/* Style pour la table */
+#tableFichesFrais {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Style pour les en-têtes */
+#tableFichesFrais thead th {
+    background-color: #4CAF50;
+    color: white;
+    text-align: left;
+    padding: 12px 15px;
+}
+
+/* Style pour les lignes du corps du tableau */
+#tableFichesFrais tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+/* Alternance des couleurs des lignes */
+#tableFichesFrais tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Style pour les cellules */
+#tableFichesFrais tbody td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+/* Effet au survol des lignes */
+#tableFichesFrais tbody tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}

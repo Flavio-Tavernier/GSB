@@ -28,6 +28,12 @@
               role="form">
             <fieldset>       
                 <?php
+                $typesVehicules = [
+                    ['id' => 1, 'libelle' => '4CV Diesel'],
+                    ['id' => 2, 'libelle' => '5/6CV Diesel'],
+                    ['id' => 3, 'libelle' => '4CV Essence'],
+                    ['id' => 4, 'libelle' => '5/6CV Essence']
+                ];
                 foreach ($lesFraisForfait as $unFrais) {
                     $idFrais = $unFrais['idfrais'];
                     $libelle = htmlspecialchars($unFrais['libelle']);
@@ -43,6 +49,17 @@
                     <?php
                 }
                 ?>
+                <div class="form-group">
+                    <label for="typeVehicule">Type de véhicule</label>
+                    <select id="typeVehicule" name="typeVehicule" class="form-control">
+                        <?php foreach ($typesVehicules as $type) { ?>
+                            <option value="<?php echo $type['id']; ?>"
+                                <?php echo ($type['id'] == $typeVehiculeUtilisateur) ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($type['libelle']); ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                </div>
                 <button class="btn btn-success" type="submit">Ajouter</button>
                 <button class="btn btn-danger" type="reset">Effacer</button>
             </fieldset>

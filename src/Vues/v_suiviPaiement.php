@@ -14,7 +14,7 @@
  */
 
 ?>
-<link href="../../public/styles/suiviPaiement.css" rel="stylesheet">
+<link href="/styles/suiviPaiement.css" rel="stylesheet">
 
 <div class="row" id="container">     
     <label for="lstVisiteur">Choisir le visiteur :</label> 
@@ -25,31 +25,28 @@
             foreach($visiteurs as $unVisiteur) {
                 $nomVisiteur = $unVisiteur['nom'];
                 $prenomVisiteur = $unVisiteur['prenom'];
+                $idVisiteur = $unVisiteur['id'];
         ?>
-            <option value="<?php echo $nomVisiteur; echo " " . $prenomVisiteur; ?>"><?php echo $nomVisiteur; echo " " . $prenomVisiteur; ?></option>
+            <option id="<?php echo $idVisiteur;?>" value="<?php echo $nomVisiteur; echo " " . $prenomVisiteur; ?>"><?php echo $nomVisiteur; echo " " . $prenomVisiteur; ?></option>
         <?php
             }
         ?>
     </select>
     <h2>
-        Liste des fiches de frais
+    Liste des fiches de frais
     </h2>
-<!--    <table>
+    <table id="tableFichesFrais">
         <thead>
             <tr>
                 <th>Date</th>
                 <th>Etat</th>
+                <th>Action</th> 
             </tr>
         </thead>
-        <tbody>
-            <?php foreach ($fichesfrais as $fichefrais): ?>
-                <tr>
-                    <td><?= htmlspecialchars($fichefrais->date) ?></td>
-                    <td><?= htmlspecialchars($fichefrais->etat) ?></td>
-                </tr>
-            <?php endforeach; ?>
+        <tbody id="tableFichesFraisContent">
+            <!-- Le contenu sera généré dynamiquement par JavaScript -->
         </tbody>
-    </table>-->
+    </table>
 </div>
 
 

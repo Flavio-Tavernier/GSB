@@ -29,6 +29,17 @@ if (isset($_GET['fonction'])) {
 
             echo json_encode($pdo->getLesMoisDisponibles($idVisiteur));
             break;
+        case 'ajaxPostEnvoyerPaiement' :
+            $idVisiteur = filter_input(INPUT_GET, 'idVisiteur', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $mois = filter_input(INPUT_GET, 'mois', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            $pdo->postEnvoyerPaiement($idVisiteur, $mois);
+            break;
+        case 'ajaxGetFichesFrais' :
+            $idVisiteur = filter_input(INPUT_GET, 'idVisiteur', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            echo json_encode($pdo->getLesFichesFrais($idVisiteur));
+            break;
         case 'ajaxGetFraisForfaits' :
             $idVisiteur = filter_input(INPUT_GET, 'idVisiteur', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $mois = filter_input(INPUT_GET, 'mois', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -85,15 +96,12 @@ if (isset($_GET['fonction'])) {
             $idVisiteur = filter_input(INPUT_GET, 'idVisiteur', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
             $dernierMoisSaisi = $pdo->dernierMoisSaisi($idVisiteur);
-            var_dump($dernierMoisSaisi);
             $dateActuelle = new DateTime();
             $prochainMois = $dateActuelle->modify('+1 month')->format('Ym');
 
             if ($prochainMois > $dernierMoisSaisi) {
                 
             }
-
-            var_dump($prochainMois);
 
             break;
         default :

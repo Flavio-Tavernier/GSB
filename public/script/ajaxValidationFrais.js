@@ -49,7 +49,7 @@ function recupereIdvisiteur()
     // FIXME:le système de recup nom prenom n'est pas bon pour tous les cas d'utilisation
     let lstVisiteur = document.getElementById('lstVisiteur');
     let idVisiteur = lstVisiteur.options[lstVisiteur.selectedIndex].id; 
-
+    
     return idVisiteur;
 }
 
@@ -80,7 +80,7 @@ function ajaxGetLesMoisDisponibles()
     
 
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxGetLesMoisDisponibles&idVisiteur=" + idVisiteur, true);
+    xhr.open("POST","/index.php?uc=ajax&fonction=ajaxGetLesMoisDisponibles&idVisiteur=" + idVisiteur, true);
 
     xhr.onload = function() {
         if (xhr.status === 200) {
@@ -140,7 +140,7 @@ function ajaxGetFraisForfaits()
     let mois = recupereMois();
         
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxGetFraisForfaits&idVisiteur=" + idVisiteur + 
+    xhr.open("POST","/index.php?uc=ajax&fonction=ajaxGetFraisForfaits&idVisiteur=" + idVisiteur + 
             "&mois=" + mois, true);
 
     xhr.onload = function() {
@@ -190,7 +190,7 @@ function ajaxGetFraisHorsForfait()
     let mois = recupereMois();
         
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxGetFraisHorsForfait&idVisiteur=" + idVisiteur + 
+    xhr.open("POST","/index.php?uc=ajax&fonction=ajaxGetFraisHorsForfait&idVisiteur=" + idVisiteur + 
             "&mois=" + mois, true);
 
     xhr.onload = function() {
@@ -279,7 +279,7 @@ function ajaxGetNbjustificatifs() {
     
     
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxGetNbjustificatifs&idVisiteur=" + idVisiteur + 
+    xhr.open("POST","/index.php?uc=ajax&fonction=ajaxGetNbjustificatifs&idVisiteur=" + idVisiteur + 
             "&mois=" + mois);
 
     xhr.onload = function() {
@@ -306,7 +306,7 @@ function ajaxMajNbJustificaifs()
     let nbJustificatifs = document.getElementById("inputNbJustificatifs").value;
 
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxMajNbJustificaifs&idVisiteur=" + idVisiteur + 
+    xhr.open("POST","/index.php?uc=ajax&fonction=ajaxMajNbJustificaifs&idVisiteur=" + idVisiteur + 
         "&mois=" + mois +
         "&nbJustificatifs=" + nbJustificatifs);
 
@@ -343,7 +343,7 @@ function ajaxMajFraisForfait() {
     let objetDesFraisForfait = {"ETP" : forfaitEtape, "KM" : fraisKilometrique, "NUI" : nuiteeHotel, "REP" : repasRestaurant};
 
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxMajFraisForfait&idVisiteur=" + idVisiteur + 
+    xhr.open("POST","/index.php?uc=ajax&fonction=ajaxMajFraisForfait&idVisiteur=" + idVisiteur + 
             "&mois=" + mois +
             "&lesFrais=" + JSON.stringify(objetDesFraisForfait));
 
@@ -376,7 +376,7 @@ function ajaxMajFraisHorsForfait(idFraisHorsForfait) {
     }
     
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxMajFraisHorsForfait&idFraisHorsForfait=" + idFraisHorsForfait +
+    xhr.open("POST","/index.php?uc=ajax&fonction=ajaxMajFraisHorsForfait&idFraisHorsForfait=" + idFraisHorsForfait +
             "&lesFraisHorsForfait=" + JSON.stringify(objetFraisHorsForfait));
 
     xhr.onload = function() {
@@ -400,7 +400,7 @@ function ajaxMajFraisHorsForfait(idFraisHorsForfait) {
 function ajaxRefuserFraisHorsForfait(idFraisHorsForfait)
 {
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxRefuserFraisHorsForfait&idFraisHorsForfait=" + idFraisHorsForfait);
+    xhr.open("POST","/index.php?uc=ajax&fonction=ajaxRefuserFraisHorsForfait&idFraisHorsForfait=" + idFraisHorsForfait);
 
     xhr.onload = function() {
         if (xhr.status === 200) {
@@ -426,7 +426,7 @@ function ajaxValiderFichefrais()
     let mois = recupereMois();
 
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxValiderFicheFrais&idVisiteur=" + idVisiteur + "&mois=" + mois);
+    xhr.open("POST","/index.php?uc=ajax&fonction=ajaxValiderFicheFrais&idVisiteur=" + idVisiteur + "&mois=" + mois);
 
     xhr.onload = function() {
         if (xhr.status === 200) {
@@ -447,7 +447,7 @@ function ajaxReporterFraisHorsForfait(idFraisHorsForfait)
 
 
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxReporterFraisHorsForfait&idVisiteur=" + idVisiteur + 
+    xhr.open("POST","/index.php?uc=ajax&fonction=ajaxReporterFraisHorsForfait&idVisiteur=" + idVisiteur + 
         "&idFraisHorsForfait=" + idFraisHorsForfait);
 
     xhr.onload = function() {
@@ -458,4 +458,28 @@ function ajaxReporterFraisHorsForfait(idFraisHorsForfait)
         }
     };
     xhr.send();
+}
+
+function ajaxUtilisateurEtMoisAuto(idVisiteur,mois)
+{  
+    const select = document.getElementById("lstVisiteur");
+    for (let i = 0; i < select.options.length; i++) {
+        if (select.options[i].id === idVisiteur) {
+            select.selectedIndex = i;
+            break;
+        }
+    }
+    ajaxGetLesMoisDisponibles();
+    setTimeout(() => {
+        const selectMois = document.getElementById("lstDatesFicheFrais");
+        for (let i = 0; i < selectMois.options.length; i++) {
+            if (selectMois.options[i].value === mois) {
+                selectMois.selectedIndex = i;
+                break;
+            }
+        }
+        ajaxGetFraisForfaits();
+        ajaxGetFraisHorsForfait();
+        ajaxGetNbjustificatifs();
+    }, 1000);
 }

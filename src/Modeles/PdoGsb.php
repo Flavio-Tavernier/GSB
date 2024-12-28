@@ -445,7 +445,6 @@ class PdoGsb
      */
     public function dernierMoisSaisi($idVisiteur): string
     {
-        var_dump($idVisiteur);
         $requetePrepare = $this->connexion->prepare(
             'SELECT MAX(mois) as dernierMois '
             . 'FROM fichefrais '
@@ -592,6 +591,115 @@ class PdoGsb
             );
         }
         return $lesMois;
+    }
+    
+    /**
+     * Retourne les fiches de frais d'un visiteur
+     *
+     * @param String $idVisiteur ID du visiteur
+     *
+     * @return un tableau associatif de clé un mois -aaaamm- et de valeurs
+     *         l'année, le mois correspondant et l'état de la fiche
+     */
+    public function getLesFichesFrais($idVisiteur): array
+    {
+        $requetePrepare = $this->connexion->prepare(
+            'SELECT fichefrais.mois AS mois, etat.libelle as etat FROM fichefrais '
+            . 'INNER JOIN etat ON fichefrais.idetat = etat.id '
+            . 'WHERE fichefrais.idvisiteur = :idVisiteur '
+            . 'ORDER BY fichefrais.mois desc'
+        );
+        $requetePrepare->bindParam(':idVisiteur', $idVisiteur, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        $lesFiches = array();
+        while ($laLigne = $requetePrepare->fetch()) {
+            $mois = $laLigne['mois'];
+            $etat = $laLigne['etat'];
+            $numAnnee = substr($mois, 0, 4);
+            $numMois = substr($mois, 4, 2);
+            $lesFiches[] = array(
+                'mois' => $mois,
+                'numAnnee' => $numAnnee,
+                'numMois' => $numMois,
+                'etat' => $etat
+            );
+        }
+        return $lesFiches;
+    }
+    
+    /**
+     * Retourne les fiches de frais d'un visiteur
+     *
+     * @param String $idVisiteur ID du visiteur
+     *
+     * @return un tableau associatif de clé un mois -aaaamm- et de valeurs
+     *         l'année, le mois correspondant et l'état de la fiche
+     */
+    public function postEnvoyerPaiement($idVisiteur, $mois): void
+    {
+        echo "<script>console.log('" . addslashes($idVisiteur) . "');</script>";
+        echo "<script>console.log('" . addslashes($mois) . "');</script>";
+        $requetePrepare = $this->connexion->prepare(
+            'UPDATE fichefrais '
+            . 'SET idetat = "AR" '
+            . 'WHERE idvisiteur = :idVisiteur AND mois = :mois'
+        );
+        $requetePrepare->bindParam(':idVisiteur', $idVisiteur, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':mois', $mois, PDO::PARAM_STR);
+        $requetePrepare->execute();
+    }
+    
+    public function getPrixKilometre(int $idTypeVehicule): float
+    {
+        $requetePrepare = $this->connexion->prepare(
+            'SELECT prix_kilometre '
+            . 'FROM type_vehicule '
+            . 'WHERE id = :idTypeVehicule'
+        );
+        $requetePrepare->bindParam(':idTypeVehicule', $idTypeVehicule, PDO::PARAM_INT);
+        $requetePrepare->execute();
+        $result = $requetePrepare->fetch();
+
+        return $result ? (float)$result['prix_kilometre'] : 0.0;
+    }
+    
+    /**
+    * Méthode pour changer le type de véhicule d'un utilisateur
+    * 
+    * @param string $idVisiteur Identifiant de l'utilisateur
+    * @param int $nouveauTypeVehicule ID du nouveau type de véhicule
+    * @return void
+    */
+   function changerTypeVehicule($idVisiteur, $nouveauTypeVehicule) {
+       $existeVehicule = $this->connexion->prepare("SELECT COUNT(*) FROM type_vehicule WHERE id = :id");
+       $existeVehicule->bindParam(':id', $nouveauTypeVehicule, PDO::PARAM_INT);
+       $existeVehicule->execute();
+
+       if ($existeVehicule->fetchColumn() == 0) {
+           Utilitaires::ajouterErreur('Le type de véhicule sélectionné est invalide.');
+           include PATH_VIEWS . 'v_erreurs.php';
+           return;
+       }
+
+       $updateVehicule = $this->connexion->prepare(
+           "UPDATE visiteur SET id_type_vehicule = :idTypeVehicule WHERE id = :idVisiteur"
+       );
+       $updateVehicule->bindParam(':idTypeVehicule', $nouveauTypeVehicule, PDO::PARAM_INT);
+       $updateVehicule->bindParam(':idVisiteur', $idVisiteur, PDO::PARAM_STR);
+
+       if (!$updateVehicule->execute()) {
+           Utilitaires::ajouterErreur('Erreur lors de la mise à jour du type de véhicule.');
+           include PATH_VIEWS . 'v_erreurs.php';
+       }
+   }
+   
+   public function getTypeVehiculeUtilisateur(string $idVisiteur): int {
+        $requete = $this->connexion->prepare(
+            "SELECT id_type_vehicule FROM visiteur WHERE id = :idVisiteur"
+        );
+        $requete->bindParam(':idVisiteur', $idVisiteur, PDO::PARAM_STR);
+        $requete->execute();
+        return (int) $requete->fetchColumn();
     }
 
     /**

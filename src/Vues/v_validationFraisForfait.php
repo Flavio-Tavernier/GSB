@@ -14,7 +14,7 @@
  */
 
 ?>
-<link href="../../public/styles/validationFrais.css" rel="stylesheet">
+<link href="/styles/validationFrais.css" rel="stylesheet">
 
 <div class="row" id="container">     
     <label for="lstVisiteur">Choisir le visiteur :</label> 
@@ -30,6 +30,17 @@
             <option id="<?php echo $idVisiteur;?>" value="<?php echo $nomVisiteur; echo " " . $prenomVisiteur; ?>">
                 <?php echo $nomVisiteur; echo " " . $prenomVisiteur; ?></option>
         <?php
+            }
+            $idVisiteur = filter_input(INPUT_POST, 'idVisiteur', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $mois = filter_input(INPUT_POST, 'mois', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            if (!empty($idVisiteur) && !empty($mois)) {
+                ?>
+                <script>
+                    const idVisiteur = "<?php echo htmlspecialchars($idVisiteur); ?>";
+                    const mois = "<?php echo htmlspecialchars($mois); ?>";
+                    ajaxUtilisateurEtMoisAuto(idVisiteur, mois);
+                </script>
+                <?php
             }
         ?>
     </select> 

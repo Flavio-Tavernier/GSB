@@ -1,5 +1,5 @@
 <!-- Appel d'un fichier javascript permettant le fonctionnement de l'ajax après certains évènements -->
-<script type="text/javascript" src="../../script/ajaxValidationFrais.js"></script>
+<script type="text/javascript" src="/script/ajaxValidationFrais.js"></script>
 
 <?php
 /**
@@ -16,7 +16,6 @@
 
 use Outils\Utilitaires;
 
-require PATH_CTRLS . 'c_ajax.php';
 require PATH_VIEWS . 'v_validationFraisForfait.php';
 require PATH_VIEWS . 'v_validationFraisHorsForfait.php';
 

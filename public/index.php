@@ -27,13 +27,11 @@ $pdo = PdoGsb::getPdoGsb();
 $estConnecte = Utilitaires::estConnecte();
 
 
-if (filter_input(INPUT_GET, 'uc', FILTER_SANITIZE_FULL_SPECIAL_CHARS) != "ajax") {
-    require PATH_VIEWS . 'v_entete.php';
-}
-
-
 $uc = filter_input(INPUT_GET, 'uc', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
+if ($uc != "ajax") {
+    require PATH_VIEWS . 'v_entete.php';
+}
 if ($uc && !$estConnecte) {
     $uc = 'connexion';
 } elseif (empty($uc)) {
@@ -71,7 +69,7 @@ switch ($uc) {
         break;
 }
 
-if (filter_input(INPUT_GET, 'uc', FILTER_SANITIZE_FULL_SPECIAL_CHARS) != "ajax") {
+if ($uc != "ajax") {
     require PATH_VIEWS . 'v_pied.php';
 }
 
