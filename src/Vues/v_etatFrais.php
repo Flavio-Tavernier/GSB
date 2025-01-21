@@ -15,7 +15,6 @@
  * @link      http://www.reseaucerta.org Contexte « Laboratoire GSB »
  * @link      https://getbootstrap.com/docs/3.3/ Documentation Bootstrap v3
  */
-
 ?>
 <hr>
 <div class="panel panel-primary">
@@ -73,4 +72,8 @@
         }
         ?>
     </table>
+</div>
+
+<div id="container-lien-print">
+    <a href="http://gsb-dev/index.php?uc=generePdf&leMois=<?php echo $numAnnee . $numMois ?>">Télécharger la fiche</a>
 </div>

@@ -26,24 +26,35 @@ abstract class Utilitaires
      */
     public static function estConnecte(): bool
     {
-        return isset($_SESSION['idVisiteur']);
+        return isset($_SESSION['idUtilisateur']) && isset($_SESSION['codeA2f']);
+    }
+
+
+    /**
+     * Connecte un utilisateut si le
+     * test A2f est vérifié
+     *
+     */
+    public static function connecterA2f($code)
+    {
+        $_SESSION['codeA2f'] = $code;
     }
 
     /**
      * Enregistre dans une variable session les infos d'un visiteur
      *
-     * @param String $idVisiteur ID du visiteur
+     * @param String $idUtilisateur ID du visiteur
      * @param String $nom        Nom du visiteur
      * @param String $prenom     Prénom du visiteur
      *
      * @return null
      */
-    public static function connecter($idVisiteur, $nom, $prenom, $comptable): void
+    public static function connecter($idUtilisateur, $nom, $prenom, $role): void
     {
-        $_SESSION['idVisiteur'] = $idVisiteur;
+        $_SESSION['idUtilisateur'] = $idUtilisateur;
         $_SESSION['nom'] = $nom;
         $_SESSION['prenom'] = $prenom;
-        $_SESSION['comptable'] = $comptable;
+        $_SESSION['role'] = $role;
     }
 
     /**

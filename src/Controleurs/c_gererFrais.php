@@ -17,7 +17,7 @@
 
 use Outils\Utilitaires;
 
-$idVisiteur = $_SESSION['idVisiteur'];
+$idVisiteur = $_SESSION['idUtilisateur'];
 $mois = Utilitaires::getMois(date('d/m/Y'));
 $numAnnee = substr($mois, 0, 4);
 $numMois = substr($mois, 4, 2);
@@ -27,15 +27,20 @@ switch ($action) {
         if ($pdo->estPremierFraisMois($idVisiteur, $mois)) {
             $pdo->creeNouvellesLignesFrais($idVisiteur, $mois);
         }
+        $typeVehiculeUtilisateur = $pdo->getTypeVehiculeUtilisateur($idVisiteur);
         break;
     case 'validerMajFraisForfait':
         $lesFrais = filter_input(INPUT_POST, 'lesFrais', FILTER_DEFAULT, FILTER_FORCE_ARRAY);
-        if (Utilitaires::lesQteFraisValides($lesFrais)) {
+        $typeVehicule = filter_input(INPUT_POST, 'typeVehicule', FILTER_SANITIZE_NUMBER_INT);
+
+        if (Utilitaires::lesQteFraisValides($lesFrais) && !empty($typeVehicule)) {
+            $pdo->changerTypeVehicule($idVisiteur, $typeVehicule);
             $pdo->majFraisForfait($idVisiteur, $mois, $lesFrais);
         } else {
-            Utilitaires::ajouterErreur('Les valeurs des frais doivent être numériques');
+            Utilitaires::ajouterErreur('Les valeurs des frais doivent être numériques et un type de véhicule doit être sélectionné');
             include PATH_VIEWS . 'v_erreurs.php';
         }
+        $typeVehiculeUtilisateur = $pdo->getTypeVehiculeUtilisateur($idVisiteur);
         break;
     case 'validerCreationFrais':
         $dateFrais = Utilitaires::dateAnglaisVersFrancais(
@@ -47,7 +52,8 @@ switch ($action) {
         if (Utilitaires::nbErreurs() != 0) {
             include PATH_VIEWS . 'v_erreurs.php';
         } else {
-            $pdo->creeNouveauFraisHorsForfait($idVisiteur, $mois, $libelle, $dateFrais, $montant);
+            $date = Utilitaires::dateFrancaisVersAnglais($dateFrais);
+            $pdo->creeNouveauFraisHorsForfait($idVisiteur, $mois, $libelle, $date, $montant);
         }
         break;
     case 'supprimerFrais':

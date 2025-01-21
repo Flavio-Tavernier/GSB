@@ -33,6 +33,47 @@ code {
   font-size: 80%;
 }
 
-.btnComptable{
-    background-color: #FF8800;
+.btnComptable > a{
+    background-color: #FF8800 !important;
+    color: #FFFFFF !important;
+}
+
+.bgComptable{
+    background-color: #FF8800 !important;
+}
+
+.txtComptable{
+    color: #FF8800 !important;
+}
+
+.borderComptable{
+    border-color: #FF8800 !important;
+}
+
+
+
+
+#container-popup {
+  height: 100vh;
+  width: 80%;
+
+  position: absolute;
+
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+#container-popup-texte {
+  box-shadow: rgba(255, 100, 111, 0.2) 0px 7px 29px 0px;
+
+  height: 20%;
+  width: 20%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 6px;
+  font-size: 20px;
 }

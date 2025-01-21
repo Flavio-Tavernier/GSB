@@ -26,10 +26,12 @@ session_start();
 $pdo = PdoGsb::getPdoGsb();
 $estConnecte = Utilitaires::estConnecte();
 
-require PATH_VIEWS . 'v_entete.php';
 
 $uc = filter_input(INPUT_GET, 'uc', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
+if ($uc != "ajax") {
+    require PATH_VIEWS . 'v_entete.php';
+}
 if ($uc && !$estConnecte) {
     $uc = 'connexion';
 } elseif (empty($uc)) {
@@ -49,12 +51,31 @@ switch ($uc) {
     case 'etatFrais':
         include PATH_CTRLS . 'c_etatFrais.php';
         break;
+    case 'validationFrais':
+        include PATH_CTRLS . 'c_validationFrais.php';
+        break;
+    case 'suiviPaiement':
+        include PATH_CTRLS . 'c_suiviPaiement.php';
+        break;
+    case 'ajax':
+        include PATH_CTRLS . 'c_ajax.php';
+        break;
     case 'deconnexion':
         include PATH_CTRLS . 'c_deconnexion.php';
+        break;
+    case 'generePdf':
+        include PATH_CTRLS . 'c_generePdf.php';
+        break;
+    case 'afficherPdf':
+        include PATH_VIEWS . 'v_afficherPdf.php';
         break;
     default:
         Utilitaires::ajouterErreur('Page non trouvée, veuillez vérifier votre lien...');
         include PATH_VIEWS . 'v_erreurs.php';
         break;
 }
-require PATH_VIEWS . 'v_pied.php';
+
+if ($uc != "ajax") {
+    require PATH_VIEWS . 'v_pied.php';
+}
+
