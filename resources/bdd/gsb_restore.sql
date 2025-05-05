@@ -669,7 +669,7 @@ INSERT INTO `visiteur` (id, nom, prenom, login, mdp, adresse, cp, ville, dateemb
 ('v959e','Vadnais','Vivienne','v.vadnais','tuiH6ohdui','84 rue de Geneve','94140','ALFORTVILLE','2003-01-16',CONCAT(login,"@swiss-galaxy.com"),null);
 
 -- Récupération des fiches de frais
-INSERT INTO `fichefrais` VALUES 
+INSERT INTO `fichefrais` (idvisiteur, mois, nbjustificatifs, montantvalide, datemodif, idetat) VALUES 
 ('a118y','202309',1,1690.05,'2023-11-02','RB'),
 ('a118y','202310',2,2576.83,'2023-12-07','RB'),
 ('a118y','202311',6,3684.80,'2024-01-04','RB'),
