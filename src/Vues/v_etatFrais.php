@@ -75,5 +75,5 @@
 </div>
 
 <div id="container-lien-print">
-    <a href="http://gsb-dev/index.php?uc=generePdf&leMois=<?php echo $numAnnee . $numMois ?>">Télécharger la fiche</a>
+    <a href="index.php?uc=generePdf&leMois=<?php echo $numAnnee . $numMois ?>">Télécharger la fiche</a>
 </div>
