@@ -36,6 +36,7 @@
             </div>
             <div class="panel-body">
                 <div class="row">
+                    <?php if ($_SESSION['role'] == '0') { ?>
                     <div class="col-xs-12 col-md-12">
                         <a href="index.php?uc=gererFrais&action=saisirFrais"
                            class="btn btn-success btn-lg" role="button">
@@ -45,6 +46,19 @@
                            class="btn btn-primary btn-lg" role="button">
                             <span class="glyphicon glyphicon-list-alt"></span>
                             <br>Afficher mes fiches de frais</a>
+                        <?php } ?>
+                    <?php if ($_SESSION['role'] == '1') { ?>
+                    <div class="col-xs-12 col-md-12">
+                        <a href="index.php?uc=validationFrais"
+                           class="btn btn-success btn-lg" role="button">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            <br>Valider les fiches de frais</a>
+                        <a href="index.php?uc=validationFrais"
+                           class="btn btn-primary btn-lg" role="button">
+                            <span class="glyphicon glyphicon-list-alt"></span>
+                            <br>Suivre le paiement des fiches de frais</a>
+                        <?php } ?>
+
                     </div>
                 </div>
             </div>
