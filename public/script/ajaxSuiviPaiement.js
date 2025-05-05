@@ -61,7 +61,7 @@ function ajaxGetFichesFrais()
     
 
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxGetFichesFrais&idVisiteur=" + idVisiteur, true);
+    xhr.open("POST","../public/index.php?uc=ajax&fonction=ajaxGetFichesFrais&idVisiteur=" + idVisiteur, true);
 
     xhr.onload = function() {
         if (xhr.status === 200) {
@@ -143,7 +143,7 @@ function ajoutElementLstFicheFrais(datesFichesFrais, idVisiteur) {
  */
 function envoyerAuRemboursement(fiche, idVisiteur) {
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","../../src/Controleurs/c_ajax.php?uc=ajax&fonction=ajaxPostEnvoyerPaiement&idVisiteur=" + idVisiteur + "&mois=" + fiche.mois, true);
+    xhr.open("POST","../public/index.php?uc=ajax&fonction=ajaxPostEnvoyerPaiement&idVisiteur=" + idVisiteur + "&mois=" + fiche.mois, true);
     xhr.send();
     ajaxGetFichesFrais();
 }

@@ -14,7 +14,7 @@
  */
 
 ?>
-<link href="/styles/suiviPaiement.css" rel="stylesheet">
+<link href="../../public/styles/suiviPaiement.css" rel="stylesheet">
 
 <div class="row" id="container">     
     <label for="lstVisiteur">Choisir le visiteur :</label> 

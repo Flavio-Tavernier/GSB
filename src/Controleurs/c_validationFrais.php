@@ -1,5 +1,5 @@
 <!-- Appel d'un fichier javascript permettant le fonctionnement de l'ajax après certains évènements -->
-<script type="text/javascript" src="/script/ajaxValidationFrais.js"></script>
+<script type="text/javascript" src="../../public/script/ajaxValidationFrais.js"></script>
 
 <?php
 /**

@@ -14,7 +14,7 @@
  */
 
 ?>
-<link href="/styles/validationFrais.css" rel="stylesheet">
+<link href="../../public/styles/validationFrais.css" rel="stylesheet">
 
 
 

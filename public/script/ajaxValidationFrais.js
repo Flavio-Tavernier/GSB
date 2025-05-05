@@ -80,7 +80,7 @@ function ajaxGetLesMoisDisponibles()
     
 
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","/index.php?uc=ajax&fonction=ajaxGetLesMoisDisponibles&idVisiteur=" + idVisiteur, true);
+    xhr.open("POST","../public/index.php?uc=ajax&fonction=ajaxGetLesMoisDisponibles&idVisiteur=" + idVisiteur, true);
 
     xhr.onload = function() {
         if (xhr.status === 200) {
@@ -140,7 +140,7 @@ function ajaxGetFraisForfaits()
     let mois = recupereMois();
         
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","/index.php?uc=ajax&fonction=ajaxGetFraisForfaits&idVisiteur=" + idVisiteur + 
+    xhr.open("POST","../public/index.php?uc=ajax&fonction=ajaxGetFraisForfaits&idVisiteur=" + idVisiteur +
             "&mois=" + mois, true);
 
     xhr.onload = function() {
@@ -190,7 +190,7 @@ function ajaxGetFraisHorsForfait()
     let mois = recupereMois();
         
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","/index.php?uc=ajax&fonction=ajaxGetFraisHorsForfait&idVisiteur=" + idVisiteur + 
+    xhr.open("POST","../public/index.php?uc=ajax&fonction=ajaxGetFraisHorsForfait&idVisiteur=" + idVisiteur +
             "&mois=" + mois, true);
 
     xhr.onload = function() {
@@ -279,7 +279,7 @@ function ajaxGetNbjustificatifs() {
     
     
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","/index.php?uc=ajax&fonction=ajaxGetNbjustificatifs&idVisiteur=" + idVisiteur + 
+    xhr.open("POST","../public/index.php?uc=ajax&fonction=ajaxGetNbjustificatifs&idVisiteur=" + idVisiteur +
             "&mois=" + mois);
 
     xhr.onload = function() {
@@ -306,7 +306,7 @@ function ajaxMajNbJustificaifs()
     let nbJustificatifs = document.getElementById("inputNbJustificatifs").value;
 
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","/index.php?uc=ajax&fonction=ajaxMajNbJustificaifs&idVisiteur=" + idVisiteur + 
+    xhr.open("POST","../public/index.php?uc=ajax&fonction=ajaxMajNbJustificaifs&idVisiteur=" + idVisiteur +
         "&mois=" + mois +
         "&nbJustificatifs=" + nbJustificatifs);
 
@@ -344,7 +344,7 @@ function ajaxMajFraisForfait() {
     let objetDesFraisForfait = {"ETP" : forfaitEtape, "KM" : fraisKilometrique, "NUI" : nuiteeHotel, "REP" : repasRestaurant};
 
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","/index.php?uc=ajax&fonction=ajaxMajFraisForfait&idVisiteur=" + idVisiteur + 
+    xhr.open("POST","../public/index.php?uc=ajax&fonction=ajaxMajFraisForfait&idVisiteur=" + idVisiteur +
             "&mois=" + mois +
             "&lesFrais=" + JSON.stringify(objetDesFraisForfait));
 
@@ -377,7 +377,7 @@ function ajaxMajFraisHorsForfait(idFraisHorsForfait) {
     }
     
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","/index.php?uc=ajax&fonction=ajaxMajFraisHorsForfait&idFraisHorsForfait=" + idFraisHorsForfait +
+    xhr.open("POST","../public/index.php?uc=ajax&fonction=ajaxMajFraisHorsForfait&idFraisHorsForfait=" + idFraisHorsForfait +
             "&lesFraisHorsForfait=" + JSON.stringify(objetFraisHorsForfait));
 
     xhr.onload = function() {
@@ -402,7 +402,7 @@ function ajaxMajFraisHorsForfait(idFraisHorsForfait) {
 function ajaxRefuserFraisHorsForfait(idFraisHorsForfait)
 {
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","/index.php?uc=ajax&fonction=ajaxRefuserFraisHorsForfait&idFraisHorsForfait=" + idFraisHorsForfait);
+    xhr.open("POST","../public/index.php?uc=ajax&fonction=ajaxRefuserFraisHorsForfait&idFraisHorsForfait=" + idFraisHorsForfait);
 
     xhr.onload = function() {
         if (xhr.status === 200) {
@@ -429,7 +429,7 @@ function ajaxValiderFichefrais()
     let mois = recupereMois();
 
     var xhr=new XMLHttpRequest();
-    xhr.open("POST","/index.php?uc=ajax&fonction=ajaxValiderFicheFrais&idVisiteur=" + idVisiteur + "&mois=" + mois);
+    xhr.open("POST","../public/index.php?uc=ajax&fonction=ajaxValiderFicheFrais&idVisiteur=" + idVisiteur + "&mois=" + mois);
 
     xhr.onload = function() {
         if (xhr.status === 200) {
@@ -466,7 +466,7 @@ function ajaxReporterFraisHorsForfait(idFraisHorsForfait)
 
     var xhr=new XMLHttpRequest();
 
-    xhr.open("POST","/index.php?uc=ajax&fonction=ajaxReporterFraisHorsForfait&idVisiteur=" + idVisiteur + 
+    xhr.open("POST","../public/index.php?uc=ajax&fonction=ajaxReporterFraisHorsForfait&idVisiteur=" + idVisiteur +
         "&idFraisHorsForfait=" + idFraisHorsForfait +
         "&lesFraisHorsForfait=" + JSON.stringify(objetFraisHorsForfait));
 
